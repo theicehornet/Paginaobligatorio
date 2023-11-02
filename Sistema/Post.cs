@@ -25,6 +25,8 @@ namespace Sistema
             _iscensurado = false;
         }
 
+        public bool IsPrivado { get { return _isprivado; } }
+
         public bool IsCensurado { get { return _iscensurado; } set { _iscensurado = value; } }
 
         /// <summary>

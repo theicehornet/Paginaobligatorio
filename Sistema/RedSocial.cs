@@ -366,6 +366,17 @@ namespace Sistema
             _posts.Add(nuevopost);
         }
 
+        public List<Post> GetPostPublicos()
+        {
+            List<Post> dev = new List<Post>();
+            foreach (Post post in _posts)
+            {
+                if (!post.IsPrivado) 
+                    dev.Add(post); 
+            }
+            return dev;
+        } 
+
         #region precarga
         /// <summary>
         /// Precarga de datos,miembros,administrador,posts,comentarios,solicitudes,relaciones aceptadas y reacciones

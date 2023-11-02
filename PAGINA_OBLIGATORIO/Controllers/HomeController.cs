@@ -1,32 +1,34 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PAGINA_OBLIGATORIO.Models;
 using System.Diagnostics;
+using Sistema;
 
 namespace PAGINA_OBLIGATORIO.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
+        RedSocial redSocial = RedSocial.Instancia;
         public IActionResult Index()
         {
             return View();
         }
-
-        public IActionResult Privacy()
+        
+        public IActionResult Login()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpPost]
+        public IActionResult Login(string email, string password)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return Redirect("/");
         }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return Redirect("/");
+        }
+
     }
 }
