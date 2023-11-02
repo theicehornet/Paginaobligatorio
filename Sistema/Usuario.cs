@@ -2,8 +2,8 @@
 {
     public class Usuario : IValidable
     {
-        public string _email;
-        public string _password;
+        private string _email;
+        private string _password;
 
         /// <summary>
         /// Constructor de la clase Usuario recibe como parametro un email y una password
@@ -20,6 +20,7 @@
         /// Propiedad que devuelve el email del usuario
         /// </summary>
         public string Email { get { return _email; } }
+        public string Password { get { return _email; } }
 
 
         /// <summary>

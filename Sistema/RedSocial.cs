@@ -375,7 +375,23 @@ namespace Sistema
                     dev.Add(post); 
             }
             return dev;
-        } 
+        }
+        public void AuthenticateUsuario(string email, string password)
+        {
+            int i = 0;
+            while (i < _usuarios.Count)
+            {
+                Usuario user = _usuarios[i];
+                if (user.Email == email)
+                {
+                    if (user.Password != password)
+                        throw new Exception("La contraseña no es correcta!");
+                    return;
+                }
+                i++;
+            }
+            throw new Exception("No existe ningun usuario con ese email");
+        }
 
         #region precarga
         /// <summary>
@@ -563,7 +579,6 @@ namespace Sistema
                 i++;
             }            
         }
-
         #endregion
     }
 }
