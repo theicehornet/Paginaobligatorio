@@ -1,0 +1,16 @@
+﻿<h1>Registrese</h1>
+
+<form method="post">
+    <label for="email">Ingresé su email:</label>
+    <input type="email" name="email" id="email" required />
+    <label for="password">Ingresé su contraseña:</label>
+    <input type="password" name="password" id="password" required />
+    <label for="nombre">Ingresé su nombre:</label>
+    <input type="text" name="nombre" id="nombre" required/>
+    <label for="apellido">Ingresé su apellido:</label>
+    <input type="text" name="apellido" id="apellido" required />
+    <label for="fechanacimiento">Ingresé su fecha de nacimiento:</label>
+    <input type="date" name="fechanacimiento" id="fechanacimiento" required/>
+    <input type="submit" value="Registrarse" />
+</form>
+<p>@ViewBag.Mensaje</p>

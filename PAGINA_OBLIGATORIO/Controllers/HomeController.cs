@@ -10,6 +10,7 @@ namespace PAGINA_OBLIGATORIO.Controllers
         RedSocial redsocial = RedSocial.Instancia;
         public IActionResult Index()
         {
+            ViewData["Title"] = "Home";
             return View();
         }
         
@@ -24,8 +25,14 @@ namespace PAGINA_OBLIGATORIO.Controllers
         {
             try
             {
-                redsocial.AuthenticateUsuario(email, password);
-                HttpContext.Session.SetString("Email", email);
+                Usuario user = redsocial.AuthenticateUsuario(email, password);
+                if(user is Administrador admin)
+                {
+                    HttpContext.Session.SetString("Nombre", "Administrador");
+                }else if(user is Miembro miembro)
+                {
+                    HttpContext.Session.SetString("Nombre", miembro.NombreCompleto());
+                }
                 return Redirect("/");
             }
             catch (Exception ex)
@@ -34,6 +41,25 @@ namespace PAGINA_OBLIGATORIO.Controllers
                 return View();
             }
             
+        }
+
+        public IActionResult Registro()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Registro(string email, string password, string nombre, string apellido, DateTime fechanacimiento)
+        {
+            try
+            {
+                redsocial.Altamiembro(email, password, nombre, apellido, fechanacimiento);
+                return Redirect($"/Home/Login");
+            }catch (Exception ex)
+            {
+                ViewBag.Mensaje = ex.Message;
+                return View();
+            }
         }
 
         public IActionResult Logout()

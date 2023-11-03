@@ -1,9 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string? nombreUsuario = Context.Session.GetString("Nombre");
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PAGINA_OBLIGATORIO</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PAGINA_OBLIGATORIO.styles.css" asp-append-version="true" />
@@ -22,12 +26,28 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" href="/Home">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/Posts/">Ver Post</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/Home/Login">Login</a>
-                        </li>
+                        
+                        @if (nombreUsuario == null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="/Posts/">Ver Post</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="/Home/Login">Iniciar sesión</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="/Posts/VerPosts">Ver Post</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark">Bienvenido @nombreUsuario</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="/Home/Logout">Cerrar sesión</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

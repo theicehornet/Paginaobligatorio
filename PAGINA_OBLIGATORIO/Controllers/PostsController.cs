@@ -11,5 +11,12 @@ namespace PAGINA_OBLIGATORIO.Controllers
             ViewBag.Posts = redsocial.GetPostPublicos();
             return View();
         }
+
+        public IActionResult VerPosts()
+        {
+            ViewBag.Posts = redsocial.GetPostVisiblesDeMiembro(null);
+            return View();
+        }
+
     }
 }
