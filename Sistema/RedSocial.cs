@@ -376,7 +376,49 @@ namespace Sistema
             }
             return dev;
         }
-        public void AuthenticateUsuario(string email, string password)
+        public List<Post> GetPostPrivados()
+        {
+            List<Post> dev = new List<Post>();
+            foreach (Post post in _posts)
+            {
+                if (post.IsPrivado)
+                    dev.Add(post);
+            }
+            return dev;
+        }
+
+        public List<Post> GetPostVisiblesDeMiembro(Miembro? miembro)
+        {
+            List<Post> dev = GetPostPublicos();
+            foreach (Post post in GetPostPrivados())
+            {  
+                if (IsAmigo(miembro, post.Autor))
+                {
+                    dev.Add(post);
+                }
+            }
+            return dev;
+        }
+
+        public bool IsAmigo(Miembro? miembro1, Miembro? miembro2)
+        {
+            int i = 0;
+            while (i < _relaciones.Count)
+            {
+                Solicitud soli = _relaciones[i];
+                if ((soli.Solicitado == miembro1 && soli.Solicitante == miembro2) || (soli.Solicitado == miembro2 && soli.Solicitante == miembro1))
+                {
+                    if ((soli.Estado == (Status)1))
+                        return true;
+                    else
+                        return false;
+                }
+                i++;
+            }
+            return false;
+        }
+
+        public Usuario AuthenticateUsuario(string email, string password)
         {
             int i = 0;
             while (i < _usuarios.Count)
@@ -386,12 +428,14 @@ namespace Sistema
                 {
                     if (user.Password != password)
                         throw new Exception("La contraseña no es correcta!");
-                    return;
+                    return user;
                 }
                 i++;
             }
             throw new Exception("No existe ningun usuario con ese email");
         }
+
+        
 
         #region precarga
         /// <summary>

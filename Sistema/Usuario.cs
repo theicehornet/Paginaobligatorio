@@ -20,7 +20,7 @@
         /// Propiedad que devuelve el email del usuario
         /// </summary>
         public string Email { get { return _email; } }
-        public string Password { get { return _email; } }
+        public string Password { get { return _password; } }
 
 
         /// <summary>

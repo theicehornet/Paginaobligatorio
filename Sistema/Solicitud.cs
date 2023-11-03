@@ -30,20 +30,6 @@
         /// Retorna el estado de la solicitud y puede ser cambiada
         /// </summary>
         public Status Estado { get { return _estado; } }
-        /// <summary>
-        /// Acepta una solicitud
-        /// </summary>
-        public void SolicitudAceptada()
-        {
-            _estado = (Status)1;
-        }
-        /// <summary>
-        /// Rechaza una solicitud
-        /// </summary>
-        public void SolicitudRechazada()
-        {
-            _estado = (Status)2;
-        }
 
         /// <summary>
         /// Retorna la id de la solicitud
@@ -53,7 +39,25 @@
         /// <summary>
         /// Propiedad de la clase Solicitud, devuelve el miembro que fue solicitado de la invitacion
         /// </summary>
-        public Miembro Solicitado { get{ return _miembrosolicitado; } }
+        public Miembro Solicitado { get { return _miembrosolicitado; } }
+
+        public Miembro Solicitante { get { return _miembrosolicitante; } }
+
+        /// <summary>
+        /// Acepta una solicitud
+        /// </summary>
+        public void SolicitudAceptada()
+        {
+            _estado = (Status)1;
+        }
+
+        /// <summary>
+        /// Rechaza una solicitud
+        /// </summary>
+        public void SolicitudRechazada()
+        {
+            _estado = (Status)2;
+        }
 
         /// <summary>
         /// Verifica que el miembro solicitado no sea el solicitante del objeto que ha casteado y viceversa
