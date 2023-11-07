@@ -1,5 +1,14 @@
 ﻿@using Sistema;
+
 @foreach(Post p in ViewBag.Posts)
 {
-    <p>@p.ToString()</p>
+    <article>
+        <p>@p.ToString()</p>
+        @foreach(Comentario com in p.Comentarios)
+        {
+            <p>@com.Autor</p>
+            <p>@com.Titulo</p>
+            <p>@com.Contenido</p>
+        }
+    </article>
 }

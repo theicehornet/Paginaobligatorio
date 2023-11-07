@@ -1,5 +1,6 @@
 ﻿@{
     string? nombreUsuario = Context.Session.GetString("Nombre");
+    string? rol = Context.Session.GetString("rol");
 }
 
 <!DOCTYPE html>
@@ -26,11 +27,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" href="/Home">Home</a>
                         </li>
-                        
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/Posts/">Ver Post</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
                         @if (nombreUsuario == null)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="/Posts/">Ver Post</a>
+                                <a class="nav-link text-dark" href="/Home/Registro">Registrarse</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" href="/Home/Login">Iniciar sesión</a>
@@ -38,9 +43,6 @@
                         }
                         else
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" href="/Posts/VerPosts">Ver Post</a>
-                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark">Bienvenido @nombreUsuario</a>
                             </li>

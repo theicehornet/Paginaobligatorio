@@ -8,15 +8,22 @@ namespace PAGINA_OBLIGATORIO.Controllers
         RedSocial redsocial = RedSocial.Instancia;
         public IActionResult Index()
         {
-            ViewBag.Posts = redsocial.GetPostPublicos();
-            return View();
+            string? roluser = HttpContext.Session.GetString("rol");
+            if (roluser == null)
+            {
+                ViewBag.Posts = redsocial.GetPostPublicos();
+            }
+            else if(roluser == "admin")
+            {
+                ViewBag.Posts = redsocial.CopiadePosts();
+            }
+            else
+            {
+                string correo = HttpContext.Session.GetString("correo");
+                Miembro miembro = redsocial.BuscarMiembro(correo);
+                ViewBag.Posts = redsocial.GetPostVisiblesDeMiembro(miembro);
+            }
+            return View(); 
         }
-
-        public IActionResult VerPosts()
-        {
-            ViewBag.Posts = redsocial.GetPostVisiblesDeMiembro(null);
-            return View();
-        }
-
     }
 }

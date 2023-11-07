@@ -26,13 +26,16 @@ namespace PAGINA_OBLIGATORIO.Controllers
             try
             {
                 Usuario user = redsocial.AuthenticateUsuario(email, password);
-                if(user is Administrador admin)
+                if(user.Rol() == "admin")
                 {
                     HttpContext.Session.SetString("Nombre", "Administrador");
-                }else if(user is Miembro miembro)
+                }else if(user.Rol() == "miembro")
                 {
+                    Miembro miembro = (Miembro)user;
                     HttpContext.Session.SetString("Nombre", miembro.NombreCompleto());
                 }
+                HttpContext.Session.SetString("rol",user.Rol());
+                HttpContext.Session.SetString("correo", user.Email);
                 return Redirect("/");
             }
             catch (Exception ex)
