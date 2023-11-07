@@ -63,5 +63,10 @@
         {
             return obj is Usuario unusuario && unusuario.Email == Email;
         }
+
+        public virtual string Rol()
+        {
+            return "user";
+        }
     }
 }

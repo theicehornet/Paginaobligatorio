@@ -92,5 +92,10 @@
                 $"Su fecha de nacimiento es: {_fechanacimiento}\n" +
                 $"Su email de contacto es: {Email}\n";
         }
+
+        public override string Rol()
+        {
+            return "miembro";
+        }
     }
 }

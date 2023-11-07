@@ -29,6 +29,8 @@ namespace Sistema
 
         public bool IsCensurado { get { return _iscensurado; } set { _iscensurado = value; } }
 
+        public List<Comentario> Comentarios { get { return _comentarios; }}
+
         /// <summary>
         /// Crea un comentario, verifica que sus datos sean corrector y si lo son lo agrega a su lista de comentarios
         /// </summary>

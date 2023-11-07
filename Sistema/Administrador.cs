@@ -11,7 +11,12 @@
         {
         }
 
-        
+        public override string Rol()
+        {
+            return "admin";
+        }
+
+
 
     }
 }

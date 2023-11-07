@@ -120,6 +120,17 @@ namespace Sistema
             }
             return listadevolver;
         }
+
+        public List<Post> CopiadePosts()
+        {
+            List<Post> listadevolver = new List<Post>();
+            foreach (Post post in _posts)
+            {
+                listadevolver.Add(post);
+            }
+            return listadevolver;
+        }
+
         /// <summary>
         /// Permite hacer una relacion entre dos miembros y
         /// verifica que ninguno de los dos este bloqueado,  
