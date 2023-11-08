@@ -1,6 +1,6 @@
 ﻿namespace Sistema
 {
-    public class Miembro : Usuario
+    public class Miembro : Usuario, IComparable<Miembro>
     {
         private string _nombre;
         private string _apellido;
@@ -96,6 +96,14 @@
         public override string Rol()
         {
             return "miembro";
+        }
+
+        public int CompareTo(Miembro? other)
+        {
+            int result = other._apellido.CompareTo(_apellido);
+            if (result != 0)
+                return result * -1;
+            return other._nombre.CompareTo(_nombre) * -1;
         }
     }
 }

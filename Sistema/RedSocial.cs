@@ -446,6 +446,23 @@ namespace Sistema
             throw new Exception("No existe ningun usuario con ese email");
         }
 
+        public Post GetPostporId(int id)
+        {
+            int i = 0;
+            Post? devolver = null;
+            while (i < _posts.Count && devolver == null)
+            {
+                if (_posts[i].Id == id)
+                {
+                    devolver = _posts[i];
+                }
+                i++;
+            }
+            if(devolver == null) 
+                throw new Exception($"No se ha encontrado al Post con id {id}");
+            return devolver;
+        }
+
         
 
         #region precarga
