@@ -17,7 +17,6 @@ namespace PAGINA_OBLIGATORIO.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            
             return View();
         }
 

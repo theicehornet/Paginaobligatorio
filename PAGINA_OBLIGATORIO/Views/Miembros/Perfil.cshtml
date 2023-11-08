@@ -1,0 +1,22 @@
+﻿@using Sistema;
+@model Miembro;
+@{
+    string rol = Context.Session.GetString("rol");
+}
+
+<p>@Model.NombreCompleto()</p>
+<article></article>
+@foreach(Post p in ViewBag.Posts)
+{
+    if (!p.IsCensurado || rol == "admin")
+    {
+        <article class="border">
+        <p>@p.ToString()</p>
+        @foreach (Comentario c in p.Comentarios)
+        {
+            <p>@c.Autor</p>
+            <p>@c.Contenido</p>
+        }
+        </article>
+    }
+}

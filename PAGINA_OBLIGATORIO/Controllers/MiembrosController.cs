@@ -15,6 +15,26 @@ namespace PAGINA_OBLIGATORIO.Controllers
             return View();
         }
 
+        public IActionResult Perfil()
+        {
+            if (HttpContext.Session.GetString("rol") == null)
+                return RedirectToAction("Login", "Home");
+            string correo = HttpContext.Session.GetString("correo");
+            Miembro logueado = redsocial.BuscarMiembro(correo);
+            ViewBag.Posts = redsocial.BuscarPostsdeMiembro(logueado);
+            return View(logueado);
+        }
+
+        
+        public IActionResult PerfilMiembro(string correo)
+        {
+            if (HttpContext.Session.GetString("rol") == null)
+                return RedirectToAction("Login", "Home");
+            Miembro buscado = redsocial.BuscarMiembro(correo);
+            ViewBag.Posts = redsocial.BuscarPostsdeMiembro(buscado);
+            return View("Perfil",buscado);
+        }
+
         public IActionResult VisualizarMiembrosOrdenados()
         {
             if (HttpContext.Session.GetString("rol") != "admin")

@@ -12,6 +12,7 @@
     {
     <article>
         <p>@p.ToString()</p>
+        <p>Comentarios</p>
         @if (rol == "admin")
         {
                 if (!p.IsCensurado)
@@ -20,13 +21,26 @@
                 }else{
                     <p><a href="/Posts/Desbanear?idpost=@p.Id">Desbanear</a></p>
                 }
-                
+
+        }else if(rol == "miembro")
+        {
+            <p><a href="/Post/Like">Like</a></p>
+            <p><a href="/Post/Dislike">Dislike</a></p>
+            <form method="post">
+                <div class="form-group">
+                    <label for="Comentario">Comenté</label>
+                    <textarea class="form-control"></textarea>
+                </div>
+                <input type="submit" value="Comentar">
+            </form>
         }
         @foreach (Comentario com in p.Comentarios)
         {
             <p>@com.Autor</p>
             <p>@com.Titulo</p>
             <p>@com.Contenido</p>
+            <p><a href="/Comentario/Like">Like</a></p>
+            <p><a href="/Comentario/Dislike">Dislike</a></p>
         }
     </article>
     } 
