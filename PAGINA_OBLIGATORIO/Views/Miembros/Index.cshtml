@@ -1,0 +1,15 @@
+﻿@using Sistema;
+
+<p><a href="/Miembros/VisualizarMiembrosOrdenados">Ordenar por Apellido y Nombre</a></p>
+@foreach (Miembro m in ViewBag.Usuarios)
+{
+    <p>@m.ToString()</p>
+    if (m.Bloqueado)
+    {
+        <p><a href="/Miembros/Desbloquear?email=@m.Email">Desbloquear</a></p>
+    }
+    else
+    {
+        <p><a href="/Miembros/Bloquear?email=@m.Email">Bloquear</a></p>
+    }
+}

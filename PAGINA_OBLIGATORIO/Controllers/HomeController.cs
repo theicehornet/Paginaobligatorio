@@ -13,7 +13,8 @@ namespace PAGINA_OBLIGATORIO.Controllers
             ViewData["Title"] = "Home";
             return View();
         }
-        
+
+        [HttpGet]
         public IActionResult Login()
         {
             
@@ -23,6 +24,7 @@ namespace PAGINA_OBLIGATORIO.Controllers
         [HttpPost]
         public IActionResult Login(string email, string password)
         {
+            email = email.ToLower();
             try
             {
                 Usuario user = redsocial.AuthenticateUsuario(email, password);
@@ -46,6 +48,7 @@ namespace PAGINA_OBLIGATORIO.Controllers
             
         }
 
+        [HttpGet]
         public IActionResult Registro()
         {
             return View();
@@ -70,6 +73,6 @@ namespace PAGINA_OBLIGATORIO.Controllers
             HttpContext.Session.Clear();
             return Redirect("/");
         }
-
+    
     }
 }

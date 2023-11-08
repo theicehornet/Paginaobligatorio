@@ -30,6 +30,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" href="/Posts/">Ver Post</a>
                         </li>
+                        @if(rol == "admin"){
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="/Miembros/">Ver Miembros</a>
+                            </li>
+                        }
                     </ul>
                     <ul class="navbar-nav">
                         @if (nombreUsuario == null)

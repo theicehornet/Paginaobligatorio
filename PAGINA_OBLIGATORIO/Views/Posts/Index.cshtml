@@ -1,14 +1,33 @@
 ﻿@using Sistema;
+@{
+    string rol = Context.Session.GetString("rol");
+}
+@if(@TempData["Mensaje"] == null){
+    <p>@TempData["Mensaje"]</p>
+}
 
 @foreach(Post p in ViewBag.Posts)
 {
+    @if (!p.IsCensurado || rol == "admin")
+    {
     <article>
         <p>@p.ToString()</p>
-        @foreach(Comentario com in p.Comentarios)
+        @if (rol == "admin")
+        {
+                if (!p.IsCensurado)
+                {
+                    <p><a href="/Posts/Banear?idpost=@p.Id">Banear</a></p>
+                }else{
+                    <p><a href="/Posts/Desbanear?idpost=@p.Id">Desbanear</a></p>
+                }
+                
+        }
+        @foreach (Comentario com in p.Comentarios)
         {
             <p>@com.Autor</p>
             <p>@com.Titulo</p>
             <p>@com.Contenido</p>
         }
     </article>
+    } 
 }
