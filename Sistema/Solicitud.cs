@@ -59,6 +59,12 @@
             _estado = (Status)2;
         }
 
+        public bool MiembroenRelacion(Miembro mi)
+        {
+            return _miembrosolicitado == mi || _miembrosolicitante == mi;
+        }
+
+
         /// <summary>
         /// Verifica que el miembro solicitado no sea el solicitante del objeto que ha casteado y viceversa
         /// </summary>

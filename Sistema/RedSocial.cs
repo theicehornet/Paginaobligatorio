@@ -156,6 +156,25 @@ namespace Sistema
             }
         }
 
+        public List<Miembro> GetAmigos(Miembro miembro)
+        {
+            List<Miembro> dev = new List<Miembro>();
+            foreach (Solicitud soli in _relaciones)
+            {
+                if(soli.Estado == (Status)1)
+                {
+                    if(soli.Solicitado == miembro)
+                    {
+                        dev.Add(soli.Solicitante);
+                    }else if(soli.Solicitante == miembro)
+                    {
+                        dev.Add(soli.Solicitado);
+                    }
+                }
+            }
+            return dev;
+        }
+
         /// <summary>
         /// Busca una relacion dada el id de la solicitud
         /// </summary>
@@ -414,18 +433,18 @@ namespace Sistema
         public bool IsAmigo(Miembro? miembro1, Miembro? miembro2)
         {
             int i = 0;
-            while (i < _relaciones.Count)
+            Solicitud encontrado = null;
+            while (i < _relaciones.Count && encontrado == null)
             {
                 Solicitud soli = _relaciones[i];
                 if ((soli.Solicitado == miembro1 && soli.Solicitante == miembro2) || (soli.Solicitado == miembro2 && soli.Solicitante == miembro1))
                 {
-                    if ((soli.Estado == (Status)1))
-                        return true;
-                    else
-                        return false;
+                    encontrado = soli;
                 }
                 i++;
             }
+            if(encontrado != null && encontrado.Estado == (Status)1)
+                return true;
             return false;
         }
 
@@ -463,7 +482,39 @@ namespace Sistema
             return devolver;
         }
 
-        
+        public List<Comentario> GetComentarios()
+        {
+            List<Comentario> dev = new List<Comentario>();
+            foreach (Post p in _posts)
+            {
+                p.AgregarComentariosALista(dev);
+            }
+            return dev;
+        }
+
+
+        public List<Post> BuscarPostsPorTextoyAceptacion(string texto, int aceptacion)
+        {
+            List<Post> dev = new List<Post>();
+            foreach (Post p in _posts)
+            {
+                if (p.AceptacionMayorA(aceptacion) && p.ExisteTexto(texto))
+                    dev.Add(p);
+            }
+            return dev;
+        }
+
+        public List<Comentario> BuscarComentarioPorTextoyAceptacion(string texto, int aceptacion)
+        {
+            List<Comentario> dev = new List<Comentario>();
+            foreach (Comentario c in GetComentarios())
+            {
+                if (c.AceptacionMayorA(aceptacion) && c.ExisteTexto(texto))
+                    dev.Add(c);
+            }
+            return dev;
+        }
+
 
         #region precarga
         /// <summary>

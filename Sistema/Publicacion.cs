@@ -61,6 +61,15 @@ namespace Sistema
             _aceptacion = 0;
         }
 
+        public bool ExisteTexto(string texto)
+        {
+            return _contenido.IndexOf(texto) != -1;
+        }
+
+        public bool AceptacionMayorA(int numero)
+        {
+            return _aceptacion > numero;
+        }
 
         /// <summary>
         /// Valida el titulo, el contenido y el autor
