@@ -5,7 +5,6 @@
 }
 
 <p>@Model.NombreCompleto()</p>
-<article></article>
 @foreach(Post p in ViewBag.Posts)
 {
     if (!p.IsCensurado || rol == "admin")

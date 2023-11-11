@@ -32,13 +32,16 @@
                         </li>
                         @if(rol == "admin"){
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="/Miembros/">Ver Miembros</a>
+                                <a class="nav-link text-dark" href="/Usuarios/VisualizarMiembros">Ver Miembros</a>
                             </li>
                         }
                         else if (rol == "miembro")
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="/Miembros/Perfil">Ver Perfil</a>
+                                <a class="nav-link text-dark" href="/Usuarios/Perfil">Ver Perfil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="/Usuarios/Amigos">Ver Amigos</a>
                             </li>
                         }
                     </ul>

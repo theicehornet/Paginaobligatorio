@@ -1,0 +1,10 @@
+﻿@using Sistema;
+
+@foreach (Miembro m in ViewBag.Amigos)
+{
+    <p>@m.ToString()</p>
+    <form action="/Usuarios/PerfilMiembro?correo=@m.Email" method="post">
+        <input type="submit" value="Ver Perfil" >
+    </form>
+}
+
