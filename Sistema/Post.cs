@@ -142,6 +142,14 @@ namespace Sistema
             return comentarios;
         }
 
+        public void AgregarComentariosALista(List<Comentario> comentarios)
+        {
+            foreach (Comentario comentario in _comentarios)
+            {
+                comentarios.Add(comentario);
+            }
+        }
+
         /// <summary>
         /// Override de equals verifica que el autor y el id sean iguales
         /// </summary>
