@@ -34,6 +34,8 @@
                 throw new Exception("Email no puede ser vacio");
             if (_email.Substring(_email.Length-3,3) != ".uy" && _email.Substring(_email.Length - 4, 4) != ".com")
                 throw new Exception("El correo no es valido");
+            if(_email.IndexOf('@') == -1)
+                throw new Exception("El correo no es valido, no tiene '@'");
             if (caracteresEspeciales.Contains(_email[0]))
                 throw new Exception("El email no es valido, no puede comenzar con caracteres especiales");
         }

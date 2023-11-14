@@ -310,6 +310,7 @@ namespace Sistema
         public void Altamiembro(string email, string password, string nombre,
             string apellido, DateTime fechanacimiento)
         {
+            email = email.ToLower();
             Miembro unmiembro = new Miembro(email, password, nombre, apellido, fechanacimiento);
             unmiembro.Validar();
             if (_usuarios.Contains(unmiembro))
@@ -555,6 +556,7 @@ namespace Sistema
         private void AdminPrecargado()
         {
             AltaAdministrador("Alberto123@gmail.com", "Albertiño1234!");
+            AltaAdministrador("ana@gmail.com", "1234");
         }
 
         /// <summary>
