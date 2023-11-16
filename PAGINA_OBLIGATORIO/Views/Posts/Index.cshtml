@@ -17,15 +17,15 @@
         {
                 if (!p.IsCensurado)
                 {
-                    <p><a href="/Posts/Banear?idpost=@p.Id">Banear</a></p>
+                    <p><a href="/Usuarios/BanearPost?idpost=@p.Id">Banear</a></p>
                 }else{
-                    <p><a href="/Posts/Desbanear?idpost=@p.Id">Desbanear</a></p>
+                    <p><a href="/Usuarios/DesbanearPost?idpost=@p.Id">Desbanear</a></p>
                 }
 
         }else if(rol == "miembro")
         {
-            <p><a href="/Post/Like">Like</a></p>
-            <p><a href="/Post/Dislike">Dislike</a></p>
+            <p><a href="/">Like</a></p>
+            <p><a href="/">Dislike</a></p>
             <form method="post">
                 <div class="form-group">
                     <label for="Comentario">Comenté</label>

@@ -25,37 +25,5 @@ namespace PAGINA_OBLIGATORIO.Controllers
             }
             return View(); 
         }
-
-        public IActionResult Banear(int idpost)
-        {
-            if (HttpContext.Session.GetString("rol") != "admin")
-                return RedirectToAction("Login", "Home");
-            try
-            {
-                Post post = redsocial.GetPostporId(idpost);
-                post.IsCensurado = true;
-            }catch (Exception ex)
-            {
-                TempData["Mensaje"] = ex.Message;
-            }
-            return RedirectToAction("Index");
-        }
-
-        public IActionResult Desbanear(int idpost)
-        {
-            if (HttpContext.Session.GetString("rol") != "admin")
-                return RedirectToAction("Login", "Home");
-            try
-            {
-                Post post = redsocial.GetPostporId(idpost);
-                post.IsCensurado = false;
-            }
-            catch (Exception ex)
-            {
-                TempData["Mensaje"] = ex.Message;
-            }
-            return RedirectToAction("Index");
-        }
-
     }
 }
