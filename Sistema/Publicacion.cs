@@ -6,22 +6,27 @@ namespace Sistema
     {
         //atributos
         private int _id;
-        private string _titulo;
-        private Miembro _autor;
+        private string? _titulo;
+        private Miembro? _autor;
         private DateTime _fecha;
-        private string _contenido;               
+        private string? _contenido;               
         private static int s_ultid = 0;
-        private List<Reaccion> _reacciones;
+        private List<Reaccion>? _reacciones;
         private int _aceptacion;
 
 
         //propiedades
-        public int Id { get { return _id; } }
-        public string Titulo { get { return _titulo; } }
-        public Miembro Autor { get { return _autor; } }
-        public string Contenido { get { return _contenido; } }
-        public DateTime Fecha { get { return _fecha; } }
-        public List<Reaccion> Reacciones { get { return _reacciones; } }
+        public int Id { get { return _id; } set { _id = s_ultid; } }
+        public string? Titulo { get { return _titulo; } set { _titulo = value; } }
+        public Miembro? Autor { get { return _autor; } set { _autor = value; } }
+        public string? Contenido { get { return _contenido; } set { _contenido = value; } }
+        public DateTime Fecha { get { return _fecha; } set { _fecha = value; } }
+        public List<Reaccion>? Reacciones { get { return _reacciones; } set { _reacciones = value; } }
+
+        public Publicacion()
+        {
+            s_ultid++;
+        }
 
         /// <summary>
         /// Valida que la reaccion hecha por un miembro no se encuentre ya en la lista
@@ -60,6 +65,8 @@ namespace Sistema
             _reacciones = new List<Reaccion>();
             _aceptacion = 0;
         }
+
+        
 
         public bool ExisteTexto(string texto)
         {

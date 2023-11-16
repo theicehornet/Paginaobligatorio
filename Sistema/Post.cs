@@ -4,8 +4,8 @@ namespace Sistema
 {
     public class Post: Publicacion,IValidable
     {
-        private string _imagen;
-        private List<Comentario> _comentarios;
+        private string? _imagen;
+        private List<Comentario>? _comentarios;
         private bool _isprivado;
         private bool _iscensurado;
 
@@ -25,11 +25,19 @@ namespace Sistema
             _iscensurado = false;
         }
 
-        public bool IsPrivado { get { return _isprivado; } }
+
+        public Post():base()
+        {
+
+        }
+
+        public string? Imagen { get { return _imagen; } set { _imagen = value; } }
+
+        public bool IsPrivado { get { return _isprivado; } set { _isprivado = value; } }
 
         public bool IsCensurado { get { return _iscensurado; } set { _iscensurado = value; } }
 
-        public List<Comentario> Comentarios { get { return _comentarios; }}
+        public List<Comentario>? Comentarios { get { return _comentarios; } set { _comentarios = value; } }
 
         /// <summary>
         /// Crea un comentario, verifica que sus datos sean corrector y si lo son lo agrega a su lista de comentarios
