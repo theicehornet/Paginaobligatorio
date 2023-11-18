@@ -25,10 +25,14 @@
         }
         #endregion
 
+        public string Nombre { get { return _nombre; } }
+
         /// <summary>
         /// Propiedad de la clase Miembro devuelve si esta bloqueado y permite modificarlo
         /// </summary>
         public bool Bloqueado { get { return _isbloqueado; } set { _isbloqueado = value; } }
+
+        public string Apellido { get { return _apellido; } }
 
         /// <summary>
         /// Metodo que retorna el nombre completo del miembro

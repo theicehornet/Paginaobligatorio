@@ -13,6 +13,14 @@
         
         }
 
+        public override int ValorDeAceptacion()
+        {
+            int cantlikes = CantidadDeLikes();
+            int cantdislikes = CantidadDeDislikes();
+            int resultado = (cantlikes * 5) + (cantdislikes * -2);
+            return resultado;
+        }
+
         /// <summary>
         /// Verifica si el autor y el id de un comentario son iguales
         /// </summary>

@@ -67,6 +67,17 @@ namespace Sistema
             return listadevolver;
         }
 
+        public List<Post> BuscarPostsPublicosdeMiembro(Miembro miembro)
+        {
+            List<Post> listadevolver = new List<Post>();
+            foreach (Post post in _posts)
+            {
+                if (post.Autor == miembro && !post.IsPrivado)
+                    listadevolver.Add(post);
+            }
+            return listadevolver;
+        }
+
         /// <summary>
         /// Dado un miembro busca todos los comentarios que haya hecho
         /// </summary>
@@ -101,8 +112,6 @@ namespace Sistema
                     miembrobuscado = unmiembro;
                 i++;
             }
-            if(miembrobuscado == null)
-                throw new Exception($"El email proporcionado {email} no concuerda con ningun miembro");
             return miembrobuscado;
         }
 
@@ -117,6 +126,17 @@ namespace Sistema
             {
                 if(usuario is Miembro)
                     listadevolver.Add((Miembro)usuario);
+            }
+            return listadevolver;
+        }
+
+        public List<Miembro> GetMiembrosPorNombre(string nombre,string apellido)
+        {
+            List<Miembro> listadevolver = new List<Miembro>();
+            foreach(Miembro miembro in CopiadeListaMiembros())
+            {
+                if(miembro.Nombre == nombre || miembro.Apellido == apellido)
+                    listadevolver.Add(miembro);
             }
             return listadevolver;
         }
@@ -142,7 +162,7 @@ namespace Sistema
         /// <param name="solicitante"></param>
         /// <param name="solicitado"></param>
         /// <exception cref="Exception"></exception>
-        public void AltaRelacion(int id, Miembro solicitante, Miembro solicitado)
+        public void AltaRelacion(Miembro solicitante, Miembro solicitado)
         {
             if (solicitante.Bloqueado)
                 throw new Exception("Usted se encuentra bloqueado, no puede enviar solicitudes");
@@ -150,8 +170,8 @@ namespace Sistema
                 throw new Exception("el usuario se encuentra bloqueado, no puede recibir solicitudes");
             if(!(solicitante == solicitado))
             {
-                Solicitud nuevarelacion = new Solicitud(id, solicitante, solicitado, (Status)3);
-                if(!_relaciones.Contains(nuevarelacion))
+                Solicitud nuevarelacion = new Solicitud(solicitante, solicitado, (Status)3);
+                if (!_relaciones.Contains(nuevarelacion))
                     _relaciones.Add(nuevarelacion);
             }
         }
@@ -210,10 +230,29 @@ namespace Sistema
             {
                 if(soli.Solicitado == solicitado)
                 {
-                    if(soli.Estado != (Status)1)
+                    if(soli.Estado == (Status)3)
                         solicituds.Add(soli);
                 }
                     
+            }
+            return solicituds;
+        }
+
+        /// <summary>
+        /// Dado un miembro busca todas las solicitudes que este miembro ha enviado
+        /// </summary>
+        /// <param name="solicitado"></param>
+        /// <returns>Una lista con todas las solicitudes enviadas del miembro</returns>
+        public List<Solicitud> GetTodasLasSolicitudesDe(Miembro solicitado)
+        {
+            List<Solicitud> solicituds = new List<Solicitud>();
+            foreach (Solicitud soli in _relaciones)
+            {
+                if (soli.Solicitante == solicitado)
+                {
+                    if (soli.Estado == (Status)3)
+                        solicituds.Add(soli);
+                }
             }
             return solicituds;
         }
@@ -267,6 +306,21 @@ namespace Sistema
         {
             if (usuario is Administrador)
                 unpost.IsCensurado = true;
+        }
+
+        public Post BuscarPostPorID(int id)
+        {
+            int i = 0;
+            Post p = null;
+            while (i < _posts.Count && p == null)
+            {
+                if (_posts[i].Id == id)
+                    p = _posts[i];
+                i++;
+            }
+            if (p == null)
+                throw new Exception("No se ha encontrado el post, tal vez se fue volando.");
+            return p;
         }
 
         /// <summary>
@@ -392,6 +446,8 @@ namespace Sistema
         /// <param name="isprivado"></param>
         public void AltaPost(string titulo, Miembro autor, string contenido, string imagen, bool isprivado = false)
         {
+            if(autor.Bloqueado)
+                throw new Exception($"El miembro {autor.NombreCompleto()} se encuentra bloqueado, no puede realizar esta acción");
             Post nuevopost = new Post(titulo, contenido, autor, imagen, isprivado);
             nuevopost.Validar();
             _posts.Add(nuevopost);
@@ -494,23 +550,41 @@ namespace Sistema
         }
 
 
-        public List<Post> BuscarPostsPorTextoyAceptacion(string texto, int aceptacion)
+        public List<Post> BuscarPostsPorTextoyAceptacion(string texto, int aceptacion,Miembro unm)
         {
             List<Post> dev = new List<Post>();
-            foreach (Post p in _posts)
+            List<Post> analizar = null;
+            if (unm == null)
+                analizar = GetPostPublicos();
+            else
+                analizar = GetPostVisiblesDeMiembro(unm);
+            foreach (Post p in analizar)
             {
-                if (p.AceptacionMayorA(aceptacion) && p.ExisteTexto(texto))
+                int valoracep = p.ValorDeAceptacion();
+                if ( valoracep > aceptacion && p.ExisteTexto(texto))
                     dev.Add(p);
             }
             return dev;
         }
 
-        public List<Comentario> BuscarComentarioPorTextoyAceptacion(string texto, int aceptacion)
+        private List<Comentario> ComentariosDePosts(List<Post> posts)
         {
             List<Comentario> dev = new List<Comentario>();
-            foreach (Comentario c in GetComentarios())
+            foreach (Post post in posts)
             {
-                if (c.AceptacionMayorA(aceptacion) && c.ExisteTexto(texto))
+                dev.AddRange(post.Comentarios);
+            }
+            return dev;
+        }
+
+        public List<Comentario> BuscarComentarioPorTextoyAceptacion(string texto, int aceptacion,Miembro unm)
+        {
+            List<Post> posts = GetPostVisiblesDeMiembro(unm);
+            List<Comentario> dev = new List<Comentario>();
+            foreach (Comentario c in ComentariosDePosts(posts))
+            {
+                int valoracep = c.ValorDeAceptacion();
+                if ( valoracep > aceptacion && c.ExisteTexto(texto))
                     dev.Add(c);
             }
             return dev;
@@ -604,11 +678,9 @@ namespace Sistema
         /// <param name="miembro"></param>
         private void EnviarSolicitudaTodos(Miembro miembro)
         {
-            int i = 0;
             foreach(Miembro unmiembro in CopiadeListaMiembros())
             {
-                AltaRelacion(i, miembro, unmiembro);
-                i++;
+                AltaRelacion(miembro, unmiembro);
             }
         }
         /// <summary>

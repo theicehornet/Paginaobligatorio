@@ -12,7 +12,6 @@ namespace Sistema
         private string? _contenido;               
         private static int s_ultid = 0;
         private List<Reaccion>? _reacciones;
-        private int _aceptacion;
 
 
         //propiedades
@@ -27,6 +26,31 @@ namespace Sistema
         {
             s_ultid++;
         }
+
+        public abstract int ValorDeAceptacion();
+
+        public int CantidadDeLikes()
+        {
+            int cantlikes = 0;
+            foreach (Reaccion reac in _reacciones)
+            {
+                if(reac.Islike) 
+                    cantlikes++;
+            }
+            return cantlikes;
+        }
+
+        public int CantidadDeDislikes()
+        {
+            int cantdislikes = 0;
+            foreach (Reaccion reac in _reacciones)
+            {
+                if (!reac.Islike)
+                    cantdislikes++;
+            }
+            return cantdislikes;
+        }
+
 
         /// <summary>
         /// Valida que la reaccion hecha por un miembro no se encuentre ya en la lista
@@ -63,7 +87,6 @@ namespace Sistema
             s_ultid++;
             _id = s_ultid;            
             _reacciones = new List<Reaccion>();
-            _aceptacion = 0;
         }
 
         
@@ -73,10 +96,7 @@ namespace Sistema
             return _contenido.IndexOf(texto) != -1;
         }
 
-        public bool AceptacionMayorA(int numero)
-        {
-            return _aceptacion > numero;
-        }
+        
 
         /// <summary>
         /// Valida el titulo, el contenido y el autor

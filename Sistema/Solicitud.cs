@@ -6,6 +6,7 @@
         private Miembro _miembrosolicitante;
         private Miembro _miembrosolicitado;
         private Status _estado;
+        private static int s_ultid = 0;
         private DateTime _fechasolicitud;
 
         /// <summary>
@@ -17,13 +18,14 @@
         /// <param name="solicitante"></param>
         /// <param name="solicitado"></param>
         /// <param name="estado"></param>
-        public Solicitud(int id, Miembro solicitante, Miembro solicitado, Status estado)
+        public Solicitud(Miembro solicitante, Miembro solicitado, Status estado)
         {
-            _id = id;
+            _id = s_ultid;
             _miembrosolicitado = solicitado;
             _miembrosolicitante = solicitante;
             _estado = estado;
             _fechasolicitud = DateTime.Now;
+            s_ultid ++;
         }
 
         /// <summary>

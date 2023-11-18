@@ -4,8 +4,8 @@ namespace Sistema
 {
     public class Post: Publicacion,IValidable
     {
-        private string? _imagen;
-        private List<Comentario>? _comentarios;
+        private string _imagen;
+        private List<Comentario> _comentarios;
         private bool _isprivado;
         private bool _iscensurado;
 
@@ -25,6 +25,32 @@ namespace Sistema
             _iscensurado = false;
         }
 
+        public override int ValorDeAceptacion()
+        {
+            int cantlikes = CantidadDeLikes();
+            int cantdislikes = CantidadDeDislikes();
+            int resultado = (cantlikes * 5) + (cantdislikes * -2);
+            if (!_isprivado)
+            {
+                return resultado + 10 ;
+            }
+            return resultado;
+        }
+
+        public Comentario BuscarComentario(int idcom)
+        {
+            int i = 0;
+            Comentario? c = null;
+            while (c == null && i < _comentarios.Count)
+            {
+                if (_comentarios[i].Id == idcom)
+                    c = _comentarios[i];
+                i++;
+            }
+            if (c == null)
+                throw new Exception("Comentario no encontrado, quizas este en un lugar mejor");
+            return c;
+        }
 
         public Post():base()
         {
