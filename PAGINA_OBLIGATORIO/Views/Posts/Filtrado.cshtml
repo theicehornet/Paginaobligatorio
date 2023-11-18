@@ -1,0 +1,61 @@
+﻿@using Sistema;
+@{
+    ViewData["Title"] = "Publicaciones Filtradas";
+    List<Comentario> comentarios = ViewBag.Comentarios;
+    List<Post> posts = ViewBag.Posts;
+    string rol = Context.Session.GetString("rol");
+}
+@if(ViewBag.Error != null)
+{
+    <p>ViewBag.Error</p>
+}
+
+@if(posts.Count == 0)
+{
+    <p>No hay post que coincidan</p>
+}
+else
+{
+    <p>Estos son los posts encontrados</p>
+    foreach(Post p in posts)
+    {
+        <article class="border border-primary my-2">
+            <p><a href="/Usuarios/PerfilMiembro?correo=@p.Autor.Email">@p.Autor.NombreCompleto()</a></p>
+            <p>@p.Imagen</p>
+            <p>@p.Contenido</p>
+            <p><a href="/Posts/ReaccionarPost?idpost=@p.Id&reaccion=1">Like</a>@p.CantidadDeLikes()</p>
+            <p><a href="/Posts/ReaccionarPost?idpost=@p.Id&reaccion=0">Dislike</a>@p.CantidadDeDislikes()</p>
+            @if (rol == "admin")
+            {
+                if (!p.IsCensurado)
+                {
+                    <p><a href="/Usuarios/BanearPost?idpost=@p.Id">Banear</a></p>
+                }
+                else
+                {
+                    <p><a href="/Usuarios/DesbanearPost?idpost=@p.Id">Desbanear</a></p>
+                }
+
+            }
+        </article>
+    }
+}
+
+@if (comentarios.Count == 0)
+{
+    <p>No hay comentarios que coincidan</p>
+}
+else
+{
+    <p>Estos son los comentarios encontrados</p>
+    foreach (Comentario p in comentarios)
+    {
+        <article class="border border-primary my-2">
+            <p><a href="/Usuarios/PerfilMiembro?correo=@p.Autor.Email">@p.Autor.NombreCompleto()</a></p>
+            <p>@p.Titulo</p>
+            <p>@p.Contenido</p>
+            <p><a href="/Posts/ReaccionarComentario?idpost=@p.Id&idcomentario=@p.Id&reaccion=1">Like</a>@p.CantidadDeLikes()</p>
+            <p><a href="/Posts/ReaccionarComentario?idpost=@p.Id&idcomentario=@p.Id&reaccion=0">Dislike</a>@p.CantidadDeDislikes()</p>
+        </article>
+    }
+}

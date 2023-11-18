@@ -49,37 +49,6 @@ namespace PAGINA_OBLIGATORIO.Controllers
             return RedirectToAction("VisualizarMiembros");
         }
 
-        public IActionResult BanearPost(int idpost)
-        {
-            if (HttpContext.Session.GetString("rol") != "admin")
-                return RedirectToAction("Login", "Home");
-            try
-            {
-                Post post = redsocial.GetPostporId(idpost);
-                post.IsCensurado = true;
-            }
-            catch (Exception ex)
-            {
-                TempData["Mensaje"] = ex.Message;
-            }
-            return RedirectToAction("Index", "Post");
-        }
-
-        public IActionResult DesbanearPost(int idpost)
-        {
-            if (HttpContext.Session.GetString("rol") != "admin")
-                return RedirectToAction("Login", "Home");
-            try
-            {
-                Post post = redsocial.GetPostporId(idpost);
-                post.IsCensurado = false;
-            }
-            catch (Exception ex)
-            {
-                TempData["Mensaje"] = ex.Message;
-            }
-            return RedirectToAction("Index", "Post");
-        }
         #endregion
 
         #region AccionesDeMiembro
@@ -94,14 +63,9 @@ namespace PAGINA_OBLIGATORIO.Controllers
             ViewBag.Posts = redsocial.BuscarPostsdeMiembro(logueado);
             return View(logueado);
         }
-        public IActionResult PerfilMiembro(string correo)
-        {
-            if (HttpContext.Session.GetString("rol") == null)
-                return RedirectToAction("Login", "Home");
-            Miembro buscado = redsocial.BuscarMiembro(correo);
-            ViewBag.Posts = redsocial.BuscarPostsdeMiembro(buscado);
-            return View("Perfil", buscado);
-        }
+
+        
+
         public IActionResult Amigos()
         {
             if (HttpContext.Session.GetString("rol") != "miembro")
@@ -115,44 +79,53 @@ namespace PAGINA_OBLIGATORIO.Controllers
         //(SE ENCARGA EL POSTCONTROLLER)
 
         //3) HACER UN NUEVO POST (PUBLICO O PRIVADO).
-        [HttpPost]
-        public IActionResult PublicarPost(string titulo, string contenido, string imagen, bool isprivado)
-        {
-            if (HttpContext.Session.GetString("rol") != "miembro")
-                return RedirectToAction("Login", "Home");
-            Miembro unm = redsocial.BuscarMiembro(HttpContext.Session.GetString("correo"));
-            try
-            {
-                redsocial.AltaPost(titulo, unm, contenido, imagen, isprivado);
-                return RedirectToAction("Index","Post");
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Mensaje = ex.Message;
-                return View();
-            }
-           
-        }
 
-        [HttpGet]
-        public IActionResult PublicarPost()
-        {
-            if (HttpContext.Session.GetString("rol") != "miembro")
-                return RedirectToAction("Login", "Home");
-           return View();
-        }
+        //(SE ENCARGA EL POSTCONTROLLER)
+
         //4) HACER UN COMENTARIO A UN POST.
+
+        //(SE ENCARGA EL POSTCONTROLLER)
+
         //5) ENVIAR UNA SOLICITUD A LAS PERSONAS.
+
+        //SE ENCARGA SOLICITUDESCONTROLLER.
+
         //6) VER LAS SOLICITUDES QUE TIENE PENDIENTE COMO SOLICITADO Y COMO SOLICITANTE, SI COMO ESTA ULTIMA NO PUEDE ACEPTARLAS
         //   (PORQUE ES EL SOLICUTANTE).
+
+        //SE ENCARGA SOLICITUDESCONTROLLER.
+
         //7) REACCIONAR A UN POST (LIKE/DISLIKE).
+
+        //(SE ENCARGA EL POSTCONTROLLER)
+
         //8) REACCIONAR A UN COMENTARIO (LIKE/DISLIKE).
+
+        //(SE ENCARGA EL POSTCONTROLLER)
+
         //9) VER PERFILES DE OTROS MIEMBROS.
+
+        public IActionResult PerfilMiembro(string correo)
+        {
+            if (HttpContext.Session.GetString("rol") == null)
+                return RedirectToAction("Login", "Home");
+            Miembro buscado = redsocial.BuscarMiembro(correo);
+            ViewBag.Posts = redsocial.BuscarPostsdeMiembro(buscado);
+            return View("Perfil", buscado);
+        }
+
         //10) DADO A UN TEXTO Y UN NUMERO QUE SERA LA ACEPTACION DE LAS PUBLICACIONES, SE BUSCARA LOS POST Y COMENTARIOS
         //    QUE COINCIDAN QUE TENGAN EL TEXTO EN SU CONTENIDO Y SU ACEPTACION SEA IGUAL O MAYOR A LA DEL PARAMETRO INGRESADO.
 
+        //SE ENCARGA POSTCONTROLLER
 
         #endregion
+
+        public IActionResult BuscarMiembrosPorNombre(string nombre = "",string apellido = "")
+        {
+            ViewBag.MiembrosBuscados = redsocial.GetMiembrosPorNombre(nombre, apellido);
+            return View("VerMiembros");
+        }
 
     }
 }

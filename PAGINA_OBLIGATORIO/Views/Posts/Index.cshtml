@@ -1,46 +1,58 @@
 ﻿@using Sistema;
 @{
     string rol = Context.Session.GetString("rol");
+    ViewData["Title"] = "Posts";
 }
-@if(@TempData["Mensaje"] == null){
+@if(@TempData["Mensaje"] != null){
     <p>@TempData["Mensaje"]</p>
 }
+
+<form action="/Posts/FiltarPostPor" method="get">
+    <label for="texto">Que frase esta buscando?</label>
+    <input type="text" name="texto" id="texto"/>
+    <label for="texto">Ingrese el número de aceptación</label>
+    <input type="number" name="aceptacion" id="texto" />
+    <input type="submit" value="Buscar" />
+</form>
 
 @foreach(Post p in ViewBag.Posts)
 {
     @if (!p.IsCensurado || rol == "admin")
     {
-    <article>
-        <p>@p.ToString()</p>
-        <p>Comentarios</p>
+        <article class="border border-primary my-5">
+        <p><a href="/Usuarios/PerfilMiembro?correo=@p.Autor.Email">@p.Autor.NombreCompleto()</a></p>
+        <p>@p.Imagen</p>
+        <p>@p.Contenido</p>
+        <p><a href="/Posts/ReaccionarPost?idpost=@p.Id&reaccion=1">Like</a>@p.CantidadDeLikes()</p>
+        <p><a href="/Posts/ReaccionarPost?idpost=@p.Id&reaccion=0">Dislike</a>@p.CantidadDeDislikes()</p>
         @if (rol == "admin")
         {
                 if (!p.IsCensurado)
                 {
-                    <p><a href="/Usuarios/BanearPost?idpost=@p.Id">Banear</a></p>
+                    <p><a href="/Posts/BanearPost?idpost=@p.Id">Banear</a></p>
                 }else{
-                    <p><a href="/Usuarios/DesbanearPost?idpost=@p.Id">Desbanear</a></p>
+                    <p><a href="/Posts/DesbanearPost?idpost=@p.Id">Desbanear</a></p>
                 }
 
-        }else if(rol == "miembro")
-        {
-            <p><a href="/">Like</a></p>
-            <p><a href="/">Dislike</a></p>
-            <form method="post">
-                <div class="form-group">
-                    <label for="Comentario">Comenté</label>
-                    <textarea class="form-control"></textarea>
-                </div>
-                <input type="submit" value="Comentar">
-            </form>
-        }
+        }  
+        <form action="/Posts/RealizarComentario" method="post">
+        <input type="text" name="idpost" value="@p.Id" hidden>
+        <div class="form-group">
+            <label for="titulo">Ingrese el titulo</label>
+            <input type="text" name="titulo">
+            <label for="Comentario">Comenté</label>
+            <textarea class="form-control"></textarea>
+        </div>
+        <input type="submit" value="Comentar">
+        </form>
+        <p>Comentarios</p>
         @foreach (Comentario com in p.Comentarios)
         {
             <p>@com.Autor</p>
             <p>@com.Titulo</p>
             <p>@com.Contenido</p>
-            <p><a href="/Comentario/Like">Like</a></p>
-            <p><a href="/Comentario/Dislike">Dislike</a></p>
+            <p><a href="/Posts/ReaccionarComentario?idpost=@p.Id&idcomentario=@com.Id&reaccion=1">Like</a>@com.CantidadDeLikes()</p>
+            <p><a href="/Posts/ReaccionarComentario?idpost=@p.Id&idcomentario=@com.Id&reaccion=0">Dislike</a>@com.CantidadDeDislikes()</p>
         }
     </article>
     } 
