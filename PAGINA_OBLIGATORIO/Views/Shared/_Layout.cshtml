@@ -1,6 +1,7 @@
 ﻿@{
     string? nombreUsuario = Context.Session.GetString("Nombre");
     string? rol = Context.Session.GetString("rol");
+    string? correo = Context.Session.GetString("correo");
 }
 
 <!DOCTYPE html>
@@ -38,10 +39,10 @@
                         else if (rol == "miembro")
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="/Usuarios/Perfil">Ver Perfil</a>
+                                <a class="nav-link text-dark" href="/Usuarios/Perfil?correo=@correo">Ver Perfil</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="/Usuarios/Amigos">Ver Amigos</a>
+                                <a class="nav-link text-dark" href="/Usuarios/Amigos?correo=@correo">Ver Amigos</a>
                             </li>
                         }
                     </ul>

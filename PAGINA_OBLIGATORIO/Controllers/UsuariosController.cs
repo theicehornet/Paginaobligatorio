@@ -53,24 +53,16 @@ namespace PAGINA_OBLIGATORIO.Controllers
 
         #region AccionesDeMiembro
         //UN MIEMBRO PUEDE:
-        //1) VER SU PERFIL(VER SUS DATOS Y LOS POSTS QUE HA SUBIDO).
-        public IActionResult Perfil()
-        {
-            if (HttpContext.Session.GetString("rol") != "miembro")
-                return RedirectToAction("Login", "Home");
-            string correo = HttpContext.Session.GetString("correo");
-            Miembro logueado = redsocial.BuscarMiembro(correo);
-            ViewBag.Posts = redsocial.BuscarPostsdeMiembro(logueado);
-            return View(logueado);
-        }
+        //1) VER SU PERFIL(VER SUS DATOS Y LOS POSTS QUE HA SUBIDO).-> llevado al 9)
+        
 
         
 
-        public IActionResult Amigos()
+        public IActionResult Amigos(string correo)
         {
-            if (HttpContext.Session.GetString("rol") != "miembro")
+            if (HttpContext.Session.GetString("rol") == null)
                 return RedirectToAction("Login", "Home");
-            Miembro mi = redsocial.BuscarMiembro(HttpContext.Session.GetString("correo"));
+            Miembro mi = redsocial.BuscarMiembro(correo);
             ViewBag.Amigos = redsocial.GetAmigos(mi);
             return View();
         }
@@ -105,15 +97,23 @@ namespace PAGINA_OBLIGATORIO.Controllers
 
         //9) VER PERFILES DE OTROS MIEMBROS.
 
-        public IActionResult PerfilMiembro(string correo)
+        public IActionResult Perfil(string correo)
         {
-            if (HttpContext.Session.GetString("rol") == null)
+            string rol = HttpContext.Session.GetString("rol");
+            if (rol == null)
                 return RedirectToAction("Login", "Home");
+            Miembro conectado = redsocial.BuscarMiembro(HttpContext.Session.GetString("correo"));
             Miembro buscado = redsocial.BuscarMiembro(correo);
-            ViewBag.Posts = redsocial.BuscarPostsdeMiembro(buscado);
-            return View("Perfil", buscado);
+            if(conectado == null && buscado == null || buscado == null)
+                return RedirectToAction("Index", "Home");
+            if (conectado == null ||conectado.Email == buscado.Email || redsocial.IsAmigo(conectado, buscado))
+                //conectado == null significa que es un admin
+                ViewBag.Posts = redsocial.BuscarPostsdeMiembro(buscado);
+            else
+                ViewBag.Posts = redsocial.BuscarPostsPublicosdeMiembro(buscado);
+            return View(buscado);
         }
-
+        
         //10) DADO A UN TEXTO Y UN NUMERO QUE SERA LA ACEPTACION DE LAS PUBLICACIONES, SE BUSCARA LOS POST Y COMENTARIOS
         //    QUE COINCIDAN QUE TENGAN EL TEXTO EN SU CONTENIDO Y SU ACEPTACION SEA IGUAL O MAYOR A LA DEL PARAMETRO INGRESADO.
 
@@ -123,7 +123,7 @@ namespace PAGINA_OBLIGATORIO.Controllers
 
         public IActionResult BuscarMiembrosPorNombre(string nombre = "",string apellido = "")
         {
-            ViewBag.MiembrosBuscados = redsocial.GetMiembrosPorNombre(nombre, apellido);
+            ViewBag.Usuarios = redsocial.GetMiembrosPorNombre(nombre, apellido);
             return View("VerMiembros");
         }
 

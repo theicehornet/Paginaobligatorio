@@ -3,6 +3,11 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Bienvenido</h1>
+    <h2>Buscas a alguien?</h2>
+    <form action="/Usuarios/BuscarMiembrosPorNombre" method="get">
+        <input type="text" name="nombre" placeholder="Ingrese el nombre"/>
+        <input type="text" name="apellido" placeholder="Ingrese el apellido" />
+        <input type="submit" value="Buscar"/>
+    </form>
 </div>
