@@ -104,14 +104,27 @@ namespace PAGINA_OBLIGATORIO.Controllers
                 return RedirectToAction("Login", "Home");
             Miembro conectado = redsocial.BuscarMiembro(HttpContext.Session.GetString("correo"));
             Miembro buscado = redsocial.BuscarMiembro(correo);
+
             if(conectado == null && buscado == null || buscado == null)
                 return RedirectToAction("Index", "Home");
-            if (conectado == null ||conectado.Email == buscado.Email || redsocial.IsAmigo(conectado, buscado))
+
+            if (conectado == null ||conectado.Equals(buscado) || redsocial.IsAmigo(conectado, buscado))
                 //conectado == null significa que es un admin
                 ViewBag.Posts = redsocial.BuscarPostsdeMiembro(buscado);
             else
                 ViewBag.Posts = redsocial.BuscarPostsPublicosdeMiembro(buscado);
-            return View(buscado);
+
+            Solicitud soli = redsocial.BuscarSolicitudPor(conectado, buscado);
+
+            if (conectado != null && redsocial.IsAmigo(conectado, buscado))
+                ViewBag.Amigos = true;
+            else if (conectado != null && soli == null)
+                ViewBag.Amigos = false;
+
+            if (conectado != null && soli != null && soli.Solicitado.Equals(conectado))
+                ViewBag.Solicitud = true;
+
+                return View(buscado);
         }
         
         //10) DADO A UN TEXTO Y UN NUMERO QUE SERA LA ACEPTACION DE LAS PUBLICACIONES, SE BUSCARA LOS POST Y COMENTARIOS
@@ -123,7 +136,10 @@ namespace PAGINA_OBLIGATORIO.Controllers
 
         public IActionResult BuscarMiembrosPorNombre(string nombre = "",string apellido = "")
         {
-            ViewBag.Usuarios = redsocial.GetMiembrosPorNombre(nombre, apellido);
+            if(nombre == "" && apellido == "")
+                ViewBag.Usuarios = redsocial.CopiadeListaMiembros();
+            else
+                ViewBag.Usuarios = redsocial.GetMiembrosPorNombre(nombre, apellido);
             return View("VerMiembros");
         }
 

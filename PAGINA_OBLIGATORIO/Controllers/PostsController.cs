@@ -128,7 +128,20 @@ namespace PAGINA_OBLIGATORIO.Controllers
             {
                 Post p = redsocial.GetPostporId(idpost);
                 Miembro Autor = redsocial.BuscarMiembro(HttpContext.Session.GetString("correo"));
-                redsocial.RealizarReaccionPost(Autor, Convert.ToBoolean(reaccion), p);
+                Reaccion? reac = p.MiembroReaccionAPost(Autor);
+                if (reac != null)
+                {
+                    if (reac.Islike && reaccion == 1 || !reac.Islike && reaccion == 0)
+                        p.EliminarReaccion(reac);
+                    else if (reac.Islike && reaccion == 0)
+                        reac.Islike = false;
+                    else if (!reac.Islike && reaccion == 1)
+                        reac.Islike = true;
+                }
+                else
+                {
+                    redsocial.RealizarReaccionPost(Autor, Convert.ToBoolean(reaccion), p);
+                }
             }
             catch (Exception ex)
             {

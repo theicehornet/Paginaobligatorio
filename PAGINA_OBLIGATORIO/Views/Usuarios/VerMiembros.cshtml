@@ -1,6 +1,8 @@
 ﻿@using Sistema;
-
-<p><a href="/Usuarios/VisualizarMiembrosOrdenados">Ordenar por Apellido y Nombre</a></p>
+@if(Context.Session.GetString("rol") == "admin")
+{
+    <p><a href="/Usuarios/VisualizarMiembrosOrdenados">Ordenar por Apellido y Nombre</a></p>
+}
 @foreach (Miembro m in ViewBag.Usuarios)
 {
     <p>@m.ToString()</p>
@@ -15,5 +17,5 @@
             <p><a href="/Usuarios/Bloquear?email=@m.Email">Bloquear</a></p>
         }
     }
-    <p><a href="/Usuarios/PerfilMiembro?correo=@m.Email">Ver Perfil</a></p>
+    <p><a href="/Usuarios/Perfil?correo=@m.Email">Ver Perfil</a></p>
 }

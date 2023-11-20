@@ -1,9 +1,33 @@
 ﻿@using Sistema;
 @model Miembro;
 @{
+    string correo = Context.Session.GetString("correo");
     string rol = Context.Session.GetString("rol");
 }
 <p>@Model.NombreCompleto()</p>
+
+@if (TempData["Error"] != null)
+{
+    <p>@TempData["Error"]</p>
+}
+
+@if (rol != "admin" && Model.Email != correo)
+{
+    if (ViewBag.Amigos != null && ViewBag.Amigos)
+    {
+        <p><a href="/Solicitudes/EliminarAmistad?correo=@Model.Email">Eliminar Amistad</a></p>
+    }
+    else if (ViewBag.Solicitud != null && ViewBag.Solicitud)
+    {
+        <p><a href="/Solicitudes/AceptarSoli?correo=@Model.Email">Aceptar Solicitud</a></p>
+        <p><a href="/Solicitudes/RechazarSoli?correo=@Model.Email">Rechazar Solicitud</a></p>
+    }
+    else
+    {
+        <p><a href="/Solicitudes/EnviarSolicitud?correosolicitado=@Model.Email">Enviar Solicitud</a></p>
+    }
+}
+
 
 <p><a href="/Usuarios/Amigos?correo=@Model.Email">Ver Amigos</a></p>
 

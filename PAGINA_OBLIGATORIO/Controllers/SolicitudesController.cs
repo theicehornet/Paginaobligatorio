@@ -34,14 +34,66 @@ namespace PAGINA_OBLIGATORIO.Controllers
             {
                 Miembro solicitante = redsocial.BuscarMiembro(HttpContext.Session.GetString("correo"));
                 Miembro solicitado = redsocial.BuscarMiembro(correosolicitado);
-                redsocial.AltaRelacion(solicitante, solicitado);
-
+                if(!redsocial.SolicitudEnviada(solicitante,solicitado))
+                    redsocial.AltaRelacion(solicitante, solicitado);
             }
             catch (Exception ex)
             {
                 TempData["Error"] = ex.Message;
             }
-            return Redirect($"/Usuarios/PerfilMiembro?correo={correosolicitado}");
+            return Redirect($"/Usuarios/Perfil?correo={correosolicitado}");
         }
+
+        public IActionResult EliminarAmistad(string correo)
+        {
+            if (HttpContext.Session.GetString("rol") != "miembro")
+                return RedirectToAction("Login", "Home");
+            try
+            {
+                Miembro solicitado = redsocial.BuscarMiembro(HttpContext.Session.GetString("correo"));
+                Miembro solicitante = redsocial.BuscarMiembro(correo);
+                redsocial.RechazarRelacion(solicitante,solicitado);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+            return Redirect($"/Usuarios/Perfil?correo={correo}");
+        }
+
+        public IActionResult AceptarSoli(string correo)
+        {
+            if (HttpContext.Session.GetString("rol") != "miembro")
+                return RedirectToAction("Login", "Home");
+            try
+            {
+                Miembro solicitado = redsocial.BuscarMiembro(HttpContext.Session.GetString("correo"));
+                Miembro solicitante = redsocial.BuscarMiembro(correo);
+                redsocial.AceptarRelacion(solicitante, solicitado);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+            return RedirectToAction("Index", "Solicitudes");
+        }
+
+        public IActionResult RechazarSoli(string correo)
+        {
+            if (HttpContext.Session.GetString("rol") != "miembro")
+                return RedirectToAction("Login", "Home");
+            try
+            {
+                Miembro solicitado = redsocial.BuscarMiembro(HttpContext.Session.GetString("correo"));
+                Miembro solicitante = redsocial.BuscarMiembro(correo);
+                redsocial.RechazarRelacion(solicitante, solicitado);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+            return RedirectToAction("Index", "Solicitudes");
+        }
+
     }
 }

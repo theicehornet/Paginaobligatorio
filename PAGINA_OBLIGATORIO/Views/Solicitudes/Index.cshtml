@@ -1,5 +1,32 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Sistema;
 @{
+    string correo = Context.Session.GetString("correo");
+}
+
+@if (TempData["Error"] != null)
+{
+    <p>@TempData["Error"]</p>
+}
+
+@if (ViewBag.Solicitudes.Count == 0)
+{
+    <p>Usted no tiene ninguna Solicitud.</p>
+}
+
+@foreach (Solicitud soli in ViewBag.Solicitudes)
+{
+    Miembro solicitante = soli.Solicitante;
+    <article>
+        @if(solicitante.Email == correo)
+        {
+            <p>Usted Le envio una solicitud a @soli.Solicitado.NombreCompleto()</p>
+        }
+        else
+        {
+            <p>Usted a recibido una solicitud de @solicitante.NombreCompleto()</p>
+            <p><a href="/Solicitudes/AceptarSoli?correo=@solicitante.Email">Aceptar Solicitud</a></p>
+            <p><a href="/Solicitudes/RechazarSoli?correo=@solicitante.Email">Rechazar Solicitud</a></p>
+        }
+        
+    </article>
 }

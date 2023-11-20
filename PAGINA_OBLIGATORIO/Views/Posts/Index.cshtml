@@ -9,7 +9,7 @@
 
 <form action="/Posts/FiltarPostPor" method="get">
     <label for="texto">Que frase esta buscando?</label>
-    <input type="text" name="texto" id="texto" required />
+    <input type="text" name="texto" id="texto" required/>
     <label for="texto">Ingrese el número de aceptación</label>
     <input type="number" name="aceptacion" id="texto" required />
     <input type="submit" value="Buscar" />
@@ -41,9 +41,9 @@
                 <input type="text" name="idpost" value="@p.Id" hidden>
                 <div class="form-group">
                     <label for="titulo">Ingrese el titulo</label>
-                    <input type="text" name="titulo">
+                    <input type="text" name="titulo" required>
                     <label for="Comentario">Comenté</label>
-                    <textarea class="form-control"></textarea>
+                    <textarea class="form-control" name="contenido" required></textarea>
                 </div>
                 <input type="submit" value="Comentar">
             </form>
