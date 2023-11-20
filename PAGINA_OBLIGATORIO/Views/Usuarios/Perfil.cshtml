@@ -27,6 +27,17 @@
         <p><a href="/Solicitudes/EnviarSolicitud?correosolicitado=@Model.Email">Enviar Solicitud</a></p>
     }
 }
+else if (rol == "admin")
+{
+    if (Model.Bloqueado)
+    {
+        <p><a href="/Usuarios/Desbloquear?email=@Model.Email">Desbloquear</a></p>
+    }
+    else
+    {
+        <p><a href="/Usuarios/Bloquear?email=@Model.Email">Bloquear</a></p>
+    }
+}
 
 
 <p><a href="/Usuarios/Amigos?correo=@Model.Email">Ver Amigos</a></p>
@@ -37,6 +48,7 @@
     {
         <article class="border border-primary my-5">
             <p><a href="/Usuarios/Perfil?correo=@p.Autor.Email">@p.Autor.NombreCompleto()</a></p>
+            <p>@p.Titulo</p>
             <p>@p.Imagen</p>
             <p>@p.Contenido</p>
             <p><a href="/Posts/ReaccionarPost?idpost=@p.Id&reaccion=1">Like</a>@p.CantidadDeLikes()</p>

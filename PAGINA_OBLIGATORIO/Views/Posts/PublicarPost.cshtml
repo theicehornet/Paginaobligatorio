@@ -1,0 +1,13 @@
+﻿<form method="post">
+    <input type="text" name="titulo" placeholder="Ingrese el titulo*" required />
+    <textarea type="text" name="contenido" placeholder="Ingrese el contenido*" required></textarea>
+    <label for="imagen">Ingrese una imagen</label>
+    <input type="file" name="imagen" id="imagen" required />
+    <label for="priv">Desea que su post sea privado?*</label>
+    <select name="isprivado" id="priv" required>
+        <option>Seleccione una opción </option>
+        <option value="true">Sí</option>
+        <option value="false">No</option>
+    </select>
+    <input type="submit" value="Publicar" />
+</form>

@@ -114,17 +114,19 @@ namespace PAGINA_OBLIGATORIO.Controllers
             else
                 ViewBag.Posts = redsocial.BuscarPostsPublicosdeMiembro(buscado);
 
-            Solicitud soli = redsocial.BuscarSolicitudPor(conectado, buscado);
+            if(rol == "miembro")
+            {
+                Solicitud soli = redsocial.BuscarSolicitudPor(conectado, buscado);
 
-            if (conectado != null && redsocial.IsAmigo(conectado, buscado))
-                ViewBag.Amigos = true;
-            else if (conectado != null && soli == null)
-                ViewBag.Amigos = false;
+                if (conectado != null && redsocial.IsAmigo(conectado, buscado))
+                    ViewBag.Amigos = true;
+                else if (conectado != null && soli == null)
+                    ViewBag.Amigos = false;
 
-            if (conectado != null && soli != null && soli.Solicitado.Equals(conectado))
-                ViewBag.Solicitud = true;
-
-                return View(buscado);
+                if (conectado != null && soli != null && soli.Solicitado.Equals(conectado))
+                    ViewBag.Solicitud = true;
+            }
+            return View(buscado);
         }
         
         //10) DADO A UN TEXTO Y UN NUMERO QUE SERA LA ACEPTACION DE LAS PUBLICACIONES, SE BUSCARA LOS POST Y COMENTARIOS

@@ -56,7 +56,7 @@ namespace PAGINA_OBLIGATORIO.Controllers
             {
                 TempData["Mensaje"] = ex.Message;
             }
-            return RedirectToAction("Index", "Post");
+            return RedirectToAction("Index", "Posts");
         }
 
         public IActionResult DesbanearPost(int idpost)
@@ -72,7 +72,7 @@ namespace PAGINA_OBLIGATORIO.Controllers
             {
                 TempData["Mensaje"] = ex.Message;
             }
-            return RedirectToAction("Index", "Post");
+            return RedirectToAction("Index", "Posts");
         }
 
         [HttpPost]
@@ -84,7 +84,7 @@ namespace PAGINA_OBLIGATORIO.Controllers
             try
             {
                 redsocial.AltaPost(titulo, unm, contenido, imagen, isprivado);
-                return RedirectToAction("Index", "Post");
+                return RedirectToAction("Index", "Posts");
             }
             catch (Exception ex)
             {
@@ -158,7 +158,22 @@ namespace PAGINA_OBLIGATORIO.Controllers
             {
                 Post p = redsocial.GetPostporId(idpost);
                 Miembro Autor = redsocial.BuscarMiembro(HttpContext.Session.GetString("correo"));
-                redsocial.RealizarReaccionComentario(Autor, Convert.ToBoolean(reaccion), p.BuscarComentario(idcomentario));
+                Comentario comentariobuscado = p.BuscarComentario(idcomentario);
+                Reaccion reac = comentariobuscado.MiembroReaccionAPost(Autor);
+                if (reac != null)
+                {
+                    if (reac.Islike && reaccion == 1 || !reac.Islike && reaccion == 0)
+                        comentariobuscado.EliminarReaccion(reac);
+                    else if (reac.Islike && reaccion == 0)
+                        reac.Islike = false;
+                    else if (!reac.Islike && reaccion == 1)
+                        reac.Islike = true;
+                }
+                else
+                {
+                    redsocial.RealizarReaccionComentario(Autor, Convert.ToBoolean(reaccion), comentariobuscado);
+                }
+                
             }
             catch (Exception ex)
             {
