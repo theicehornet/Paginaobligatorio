@@ -156,6 +156,28 @@ namespace Sistema
                 throw new Exception("El autor no puede ser un objeto nulo");
         }
 
+        public Reaccion? MiembroReaccionAPost(Miembro mi)
+        {
+            int i = 0;
+            Reaccion re = null;
+            while (i < _reacciones.Count && re == null)
+            {
+                if (_reacciones[i].Miembro == mi)
+                    re = _reacciones[i];
+                i++;
+            }
+            return re;
+        }
+
+        public void EliminarReaccion(Reaccion reac)
+        {
+            int i = 0;
+            if(_reacciones.Contains(reac))
+            {
+                _reacciones.Remove(reac);
+            }
+        }
+
         public string MostrarContenidoRecortado()
         {
             string contenidopost = (string)Contenido.Clone();

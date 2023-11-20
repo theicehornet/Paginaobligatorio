@@ -490,9 +490,9 @@ namespace Sistema
                 throw new Exception("Usted se encuentra bloqueado, no puede enviar solicitudes");
             if (solicitado.Bloqueado)
                 throw new Exception("el usuario se encuentra bloqueado, no puede recibir solicitudes");
+            Solicitud nuevarelacion = new Solicitud(solicitante, solicitado, (Status)3);
             if (!(solicitante == solicitado))
             {
-                Solicitud nuevarelacion = new Solicitud(solicitante, solicitado, (Status)3);
                 if (!_relaciones.Contains(nuevarelacion))
                     _relaciones.Add(nuevarelacion);
             }
@@ -524,7 +524,7 @@ namespace Sistema
         /// <param name="idrelacion"></param>
         /// <returns>una solicitud que coincida con el id</returns>
         /// <exception cref="Exception"></exception>
-        private Solicitud BuscarSolicitudporId(int idrelacion)
+        private int BuscarSolicitudporId(int idrelacion)
         {
             Solicitud solicitud = null;
             int i = 0;
@@ -536,7 +536,7 @@ namespace Sistema
             }
             if (solicitud == null)
                 throw new Exception("Solicitud no encontrada");
-            return solicitud;
+            return i-1;
         }
 
 
@@ -580,8 +580,31 @@ namespace Sistema
             return solicituds;
         }
 
+        public Solicitud BuscarSolicitudPor(Miembro solicitante, Miembro solicitado)
+        {
+            int i = 0;
+            Solicitud dev = null;
+            while(i < _relaciones.Count && dev == null)
+            {
+                if (_relaciones[i].MiembrosEnRelacion(solicitante, solicitado))
+                {
+                    dev = _relaciones[i];
+                }
+                i++;
+            }
+            return dev;
+        }
 
-
+        public bool SolicitudEnviada(Miembro solicitante, Miembro solicitado)
+        {
+            if (solicitado.Bloqueado)
+                throw new Exception($"{solicitado.NombreCompleto()} se encuentra bloqueado, no puede recibir solicitudes");
+            if (solicitante.Bloqueado)
+                throw new Exception("Usted se encuentra bloqueado, no puede enviar solicitudes");
+            if (BuscarSolicitudPor(solicitante, solicitado) == null)
+                return false;
+            throw new Exception("Usted ya envio o ya ha recibido una solicitud de este miembro");
+        }
 
         /// <summary>
         /// Dado un id de solicitud y un miembro que es el solicitado y si este no esta bloqueado acepta una relacion
@@ -589,7 +612,7 @@ namespace Sistema
         /// <param name="idrelacion"></param>
         /// <param name="solicitado"></param>
         /// <exception cref="Exception"></exception>
-        public void AceptarRelacion(Solicitud solicitudbuscada, Miembro solicitado)
+        private void AceptarRelacion(Solicitud solicitudbuscada, Miembro solicitado)
         {
             if (solicitado.Bloqueado)
                 throw new Exception("Miembro bloqueado no puedes aceptar ni rechazar solicitudes");
@@ -598,18 +621,46 @@ namespace Sistema
             solicitudbuscada.SolicitudAceptada();
         }
         /// <summary>
-        /// Dado un id de solicitud y un miembro que es el solicitado y si este no esta bloqueado rechaza una relacion
+        /// Dado una solicitud y un miembro que es el solicitado y si este no esta bloqueado rechaza una relacion
         /// </summary>
         /// <param name="idrelacion"></param>
         /// <param name="solicitado"></param>
         /// <exception cref="Exception"></exception>
-        public void RechazarRelacion(Solicitud solicitudbuscada, Miembro solicitado)
+        private void RechazarRelacion(Solicitud solicitudbuscada, Miembro solicitado)
         {
             if (solicitado.Bloqueado)
                 throw new Exception("Miembro bloqueado no puedes aceptar ni rechazar solicitudes");
             if (!(solicitudbuscada.Solicitado == solicitado))
                 throw new Exception("Usted no es el miembro solicitado no puede aceptar la solicitud");
             solicitudbuscada.SolicitudRechazada();
+        }
+
+        public void RechazarRelacion(Miembro solicitante, Miembro solicitado)
+        {
+            if (solicitado.Bloqueado)
+                throw new Exception("Miembro bloqueado no puedes aceptar ni rechazar solicitudes");
+            Solicitud soli = BuscarSolicitudPor(solicitante, solicitado);
+            _relaciones.Remove(soli);
+        }
+
+        public void AceptarRelacion(Miembro solicitante, Miembro solicitado)
+        {
+            if (solicitado.Bloqueado)
+                throw new Exception("Miembro bloqueado no puedes aceptar ni rechazar solicitudes");
+            Solicitud soli = BuscarSolicitudPor(solicitante, solicitado);
+            if (!_relaciones.Contains(soli))
+                throw new Exception("Solicitud no encontrada");
+            soli.SolicitudAceptada();
+        }
+
+        private List<Solicitud> CopiaListaSolicitudes()
+        {
+            List<Solicitud> dev = new List<Solicitud>();
+            foreach(Solicitud soli in _relaciones)
+            {
+                dev.Add(soli);
+            }
+            return dev;
         }
 
         #endregion
@@ -627,8 +678,20 @@ namespace Sistema
             SolicitudesPrecargadas();
             RelacionesPrecargadas();
             ReaccionesPrecargadas();
+            EliminarSolicitudesRechazadas();
         }
 
+        /// <summary>
+        /// Elimina todas las solicitudes que hayan sido rechazadas.
+        /// </summary>
+        private void EliminarSolicitudesRechazadas()
+        {
+            foreach(Solicitud soli in CopiaListaSolicitudes())
+            {
+                if(soli.Estado == (Status)2)
+                    _relaciones.Remove(soli);
+            }
+        }
 
         /// <summary>
         /// Precargando miembros

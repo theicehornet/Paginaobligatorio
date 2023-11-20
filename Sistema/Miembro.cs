@@ -92,8 +92,8 @@
         /// <returns></returns>
         public override string ToString()
         {
-            return $"El nombre completo del usuario es: {_nombre} {_apellido}\n" +
-                $"Su fecha de nacimiento es: {_fechanacimiento}\n" +
+            return $"El nombre completo del usuario es: {_nombre} {_apellido}\n " +
+                $"Su fecha de nacimiento es: {_fechanacimiento}\n " +
                 $"Su email de contacto es: {Email}\n";
         }
 

@@ -16,6 +16,8 @@
         /// </summary>
         public bool Islike { get { return _islike; } set { _islike = value; } }
 
+        public Miembro Miembro { get { return _miembro; } }
+
         /// <summary>
         /// Valida que la reaccion sea valida.
         /// </summary>

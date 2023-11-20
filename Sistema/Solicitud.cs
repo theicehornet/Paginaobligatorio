@@ -53,6 +53,11 @@
             _estado = (Status)1;
         }
 
+        public bool MiembrosEnRelacion(Miembro solicitante,Miembro solicitado)
+        {
+            return (_miembrosolicitante.Email == solicitante.Email && _miembrosolicitado.Email == solicitado.Email) || (_miembrosolicitante.Email == solicitado.Email && _miembrosolicitado.Email == solicitante.Email);
+        }
+
         /// <summary>
         /// Rechaza una solicitud
         /// </summary>
@@ -61,12 +66,6 @@
             _estado = (Status)2;
         }
 
-        public bool MiembroenRelacion(Miembro mi)
-        {
-            return _miembrosolicitado == mi || _miembrosolicitante == mi;
-        }
-
-
         /// <summary>
         /// Verifica que el miembro solicitado no sea el solicitante del objeto que ha casteado y viceversa
         /// </summary>
@@ -74,7 +73,8 @@
         /// <returns></returns>
         public override bool Equals(object? obj)
         {
-            return obj is Solicitud unasoli && unasoli.Solicitado == _miembrosolicitante && unasoli._miembrosolicitante == _miembrosolicitado;
+            return obj is Solicitud unasoli && ((unasoli.Solicitado == _miembrosolicitante && unasoli._miembrosolicitante == _miembrosolicitado)||
+                (unasoli.Solicitado == _miembrosolicitado && unasoli._miembrosolicitante == _miembrosolicitante));
         }
     }
 }
