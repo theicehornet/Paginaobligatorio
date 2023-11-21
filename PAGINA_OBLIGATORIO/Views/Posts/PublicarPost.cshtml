@@ -1,4 +1,9 @@
-﻿<form method="post">
+﻿@if(ViewBag.Mensaje != null)
+{
+    <p>@ViewBag.Mensaje</p>
+}
+
+<form method="post">
     <input type="text" name="titulo" placeholder="Ingrese el titulo*" required />
     <textarea type="text" name="contenido" placeholder="Ingrese el contenido*" required></textarea>
     <label for="imagen">Ingrese una imagen</label>

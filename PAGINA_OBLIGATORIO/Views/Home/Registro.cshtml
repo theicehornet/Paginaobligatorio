@@ -13,4 +13,7 @@
     <input type="date" name="fechanacimiento" id="fechanacimiento" required/>
     <input type="submit" value="Registrarse" />
 </form>
-<p>@ViewBag.Mensaje</p>
+@if (ViewBag.Mensaje != null)
+{
+    <p>@ViewBag.Mensaje</p>
+}
