@@ -52,7 +52,12 @@
         {
             _estado = (Status)1;
         }
-
+        /// <summary>
+        /// Verifica que los miembros esten en la solicitud.
+        /// </summary>
+        /// <param name="solicitante"></param>
+        /// <param name="solicitado"></param>
+        /// <returns>true si lo estan, false si es lo contrario.</returns>
         public bool MiembrosEnRelacion(Miembro solicitante,Miembro solicitado)
         {
             return (_miembrosolicitante.Email == solicitante.Email && _miembrosolicitado.Email == solicitado.Email) || (_miembrosolicitante.Email == solicitado.Email && _miembrosolicitado.Email == solicitante.Email);

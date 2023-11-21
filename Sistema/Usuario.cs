@@ -1,6 +1,6 @@
 ﻿namespace Sistema
 {
-    public class Usuario : IValidable
+    public abstract class Usuario : IValidable
     {
         private string _email;
         private string _password;
@@ -65,10 +65,9 @@
         {
             return obj is Usuario unusuario && unusuario.Email == Email;
         }
-
-        public virtual string Rol()
-        {
-            return "user";
-        }
+        /// <summary>
+        /// Metodo polimorifico para que dependiendo del usuario devuelva su rol.
+        /// </summary>
+        public abstract string Rol();
     }
 }

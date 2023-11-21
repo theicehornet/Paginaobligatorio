@@ -10,7 +10,10 @@
         public Administrador(string email, string password):base(email,password) 
         {
         }
-
+        /// <summary>
+        /// Devuelve el rol de un Administrador
+        /// </summary>
+        /// <returns>El rol</returns>
         public override string Rol()
         {
             return "admin";

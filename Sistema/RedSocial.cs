@@ -43,6 +43,12 @@ namespace Sistema
 
         #region Metodos De Posts
 
+        /// <summary>
+        /// Busca por los post alguno que coincida por su id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>El post buscado si se encontro si no una excepcion</returns>
+        /// <exception cref="Exception"></exception>
         public Post GetPostporId(int id)
         {
             int i = 0;
@@ -77,6 +83,10 @@ namespace Sistema
             _posts.Add(nuevopost);
         }
 
+        /// <summary>
+        /// Busca todos los post publicos que esten guardados
+        /// </summary>
+        /// <returns>Una lista de posts publicos</returns>
         public List<Post> GetPostPublicos()
         {
             List<Post> dev = new List<Post>();
@@ -87,6 +97,11 @@ namespace Sistema
             }
             return dev;
         }
+
+        /// <summary>
+        /// Busca todos los post privados que esten guardados
+        /// </summary>
+        /// <returns>Una lista de posts privados</returns>
         public List<Post> GetPostPrivados()
         {
             List<Post> dev = new List<Post>();
@@ -98,6 +113,11 @@ namespace Sistema
             return dev;
         }
 
+        /// <summary>
+        /// Busca todos los posts visibles para un miembro, todos los publicos y los privados que sean correspondientes
+        /// </summary>
+        /// <param name="miembro"></param>
+        /// <returns>Una lista de posts</returns>
         public List<Post> GetPostVisiblesDeMiembro(Miembro? miembro)
         {
             List<Post> dev = GetPostPublicos();
@@ -128,6 +148,11 @@ namespace Sistema
             return listadevolver;
         }
 
+        /// <summary>
+        /// Busca todos los posts publicos de un miembro
+        /// </summary>
+        /// <param name="miembro"></param>
+        /// <returns>Una lista de post publicos</returns>
         public List<Post> BuscarPostsPublicosdeMiembro(Miembro miembro)
         {
             List<Post> listadevolver = new List<Post>();
@@ -165,7 +190,13 @@ namespace Sistema
         {
             post.AltaReaccion(miembro, reaccion);
         }
-
+        /// <summary>
+        /// Busca por los posts alguno que tengo el texto en su contenido y que su aceptacion sea igual o mayor a la ingresada.
+        /// </summary>
+        /// <param name="texto"></param>
+        /// <param name="aceptacion"></param>
+        /// <param name="unm"></param>
+        /// <returns>Una lista de posts</returns>
         public List<Post> BuscarPostsPorTextoyAceptacion(string texto, int aceptacion, Miembro unm)
         {
             List<Post> dev = new List<Post>();
@@ -200,7 +231,10 @@ namespace Sistema
             listdevolver.Sort();
             return listdevolver;
         }
-
+        /// <summary>
+        /// Es una copia de la lista de los posts
+        /// </summary>
+        /// <returns>Una lista de posts</returns>
         public List<Post> CopiadePosts()
         {
             List<Post> listadevolver = new List<Post>();
@@ -222,28 +256,23 @@ namespace Sistema
                 unpost.IsCensurado = true;
         }
 
-        public Post BuscarPostPorID(int id)
-        {
-            int i = 0;
-            Post p = null;
-            while (i < _posts.Count && p == null)
-            {
-                if (_posts[i].Id == id)
-                    p = _posts[i];
-                i++;
-            }
-            if (p == null)
-                throw new Exception("No se ha encontrado el post, tal vez se fue volando.");
-            return p;
-        }
-
         #endregion
 
         #region Metodos de Comentarios
-
+        /// <summary>
+        /// Busca por los comentarios de los posts si alguno que tiene el texto en su contenido y que su aceptacion sea igual o mayor a la ingresada.
+        /// </summary>
+        /// <param name="texto"></param>
+        /// <param name="aceptacion"></param>
+        /// <param name="unm"></param>
+        /// <returns>Una lista de comentarios</returns>
         public List<Comentario> BuscarComentarioPorTextoyAceptacion(string texto, int aceptacion, Miembro unm)
         {
-            List<Post> posts = GetPostVisiblesDeMiembro(unm);
+            List<Post> posts;
+            if (unm == null)
+                posts = GetPostPublicos();
+            else
+                posts = GetPostVisiblesDeMiembro(unm);
             List<Comentario> dev = new List<Comentario>();
             foreach (Comentario c in ComentariosDePosts(posts))
             {
@@ -253,6 +282,11 @@ namespace Sistema
             }
             return dev;
         }
+        /// <summary>
+        /// Obtiene todos los comentarios de los posts
+        /// </summary>
+        /// <param name="posts"></param>
+        /// <returns>Lista de comentarios</returns>
         private List<Comentario> ComentariosDePosts(List<Post> posts)
         {
             List<Comentario> dev = new List<Comentario>();
@@ -262,7 +296,10 @@ namespace Sistema
             }
             return dev;
         }
-
+        /// <summary>
+        /// Obtiene los Comentarios de todos los posts
+        /// </summary>
+        /// <returns>Lista de comentarios</returns>
         public List<Comentario> GetComentarios()
         {
             List<Comentario> dev = new List<Comentario>();
@@ -317,6 +354,13 @@ namespace Sistema
 
         #region Metodos de Usuarios
 
+        /// <summary>
+        /// Verifica que el usuario con ese email exista, lo busca y lo devuelve, si no lanza una excepcion
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns>Devuelve un usuario</returns>
+        /// <exception cref="Exception"></exception>
         public Usuario AuthenticateUsuario(string email, string password)
         {
             int i = 0;
@@ -447,7 +491,12 @@ namespace Sistema
             }
             return listadevolver;
         }
-
+        /// <summary>
+        /// Busca a Miembros dado su nombre y apellido
+        /// </summary>
+        /// <param name="nombre"></param>
+        /// <param name="apellido"></param>
+        /// <returns>Una lista de miembros</returns>
         public List<Miembro> GetMiembrosPorNombre(string nombre, string apellido)
         {
             List<Miembro> listadevolver = new List<Miembro>();
@@ -462,7 +511,12 @@ namespace Sistema
         #endregion
 
         #region Metodos de Solicitud
-
+        /// <summary>
+        /// Verifica que los dos miembros tengan una relacion
+        /// </summary>
+        /// <param name="miembro1"></param>
+        /// <param name="miembro2"></param>
+        /// <returns>true si son amigos, false si es lo contrario.</returns>
         public bool IsAmigo(Miembro? miembro1, Miembro? miembro2)
         {
             int i = 0;
@@ -505,7 +559,11 @@ namespace Sistema
                     _relaciones.Add(nuevarelacion);
             }
         }
-
+        /// <summary>
+        /// Devuelve todos los miembros con los que tenga una amistad
+        /// </summary>
+        /// <param name="miembro"></param>
+        /// <returns>una lista de miembros</returns>
         public List<Miembro> GetAmigos(Miembro miembro)
         {
             List<Miembro> dev = new List<Miembro>();
@@ -588,6 +646,12 @@ namespace Sistema
             return solicituds;
         }
 
+        /// <summary>
+        /// Busca una solicitud donde los dos miembros esten involucrados
+        /// </summary>
+        /// <param name="solicitante"></param>
+        /// <param name="solicitado"></param>
+        /// <returns>Una solicitud</returns>
         public Solicitud BuscarSolicitudPor(Miembro solicitante, Miembro solicitado)
         {
             int i = 0;
@@ -602,7 +666,13 @@ namespace Sistema
             }
             return dev;
         }
-
+        /// <summary>
+        /// Verifica si estos dos miembros tienen una solicitud pendiente con el otro
+        /// </summary>
+        /// <param name="solicitante"></param>
+        /// <param name="solicitado"></param>
+        /// <returns>true si tienen una invitacion,false si no</returns>
+        /// <exception cref="Exception"></exception>
         public bool SolicitudEnviada(Miembro solicitante, Miembro solicitado)
         {
             if (solicitado.Bloqueado)
@@ -642,7 +712,12 @@ namespace Sistema
                 throw new Exception("Usted no es el miembro solicitado no puede aceptar la solicitud");
             solicitudbuscada.SolicitudRechazada();
         }
-
+        /// <summary>
+        /// Busca la solicitud de estos miembros y la elimina
+        /// </summary>
+        /// <param name="solicitante"></param>
+        /// <param name="solicitado"></param>
+        /// <exception cref="Exception"></exception>
         public void RechazarRelacion(Miembro solicitante, Miembro solicitado)
         {
             if (solicitado.Bloqueado)
@@ -650,7 +725,12 @@ namespace Sistema
             Solicitud soli = BuscarSolicitudPor(solicitante, solicitado);
             _relaciones.Remove(soli);
         }
-
+        /// <summary>
+        /// Busca la solicitud y la acepta
+        /// </summary>
+        /// <param name="solicitante"></param>
+        /// <param name="solicitado"></param>
+        /// <exception cref="Exception"></exception>
         public void AceptarRelacion(Miembro solicitante, Miembro solicitado)
         {
             if (solicitado.Bloqueado)
@@ -660,7 +740,10 @@ namespace Sistema
                 throw new Exception("Solicitud no encontrada");
             soli.SolicitudAceptada();
         }
-
+        /// <summary>
+        /// Devuelve una copia de la lista de solicitudes
+        /// </summary>
+        /// <returns>una lista de solicitudes</returns>
         private List<Solicitud> CopiaListaSolicitudes()
         {
             List<Solicitud> dev = new List<Solicitud>();

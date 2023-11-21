@@ -96,12 +96,19 @@
                 $"Su fecha de nacimiento es: {_fechanacimiento}\n " +
                 $"Su email de contacto es: {Email}\n";
         }
-
+        /// <summary>
+        /// Devuelve el rol del miembro
+        /// </summary>
+        /// <returns>eL rol de miembro</returns>
         public override string Rol()
         {
             return "miembro";
         }
-
+        /// <summary>
+        /// Ordena de Z->A primero por el apellido y luego por el nombre.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public int CompareTo(Miembro? other)
         {
             int result = other._apellido.CompareTo(_apellido);

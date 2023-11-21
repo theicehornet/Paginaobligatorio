@@ -12,7 +12,10 @@
         {
         
         }
-
+        /// <summary>
+        /// Devuelve el valor de aceptacion
+        /// </summary>
+        /// <returns>Un entero</returns>
         public override int ValorDeAceptacion()
         {
             return base.ValorDeAceptacion();

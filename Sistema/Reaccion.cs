@@ -27,10 +27,14 @@
             if (_miembro == null)
                 throw new Exception("El miembro no puede ser nulo");
         }
-
+        /// <summary>
+        /// Verifica que las reacciones sean la misma
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object? obj)
         {
-            return obj is Reaccion unareaccion && unareaccion._miembro == _miembro;
+            return obj is Reaccion unareaccion && unareaccion._miembro.Equals(_miembro);
 
         }
 

@@ -24,7 +24,10 @@ namespace Sistema
             _isprivado = isprivado;
             _iscensurado = false;
         }
-
+        /// <summary>
+        /// Calcula el valor de aceptacion para un post
+        /// </summary>
+        /// <returns>un número entero</returns>
         public override int ValorDeAceptacion()
         {
             int resultado = base.ValorDeAceptacion();
@@ -34,7 +37,12 @@ namespace Sistema
             }
             return resultado;
         }
-
+        /// <summary>
+        /// Busca un comentario dado el id
+        /// </summary>
+        /// <param name="idcom"></param>
+        /// <returns>El comentario buscado</returns>
+        /// <exception cref="Exception"></exception>
         public Comentario BuscarComentario(int idcom)
         {
             int i = 0;
@@ -173,7 +181,10 @@ namespace Sistema
             }
             return comentarios;
         }
-
+        /// <summary>
+        /// Agrega los comentarios del post a una lista pasada por paramentro
+        /// </summary>
+        /// <param name="comentarios"></param>
         public void AgregarComentariosALista(List<Comentario> comentarios)
         {
             foreach (Comentario comentario in _comentarios)

@@ -26,7 +26,10 @@ namespace Sistema
         {
             s_ultid++;
         }
-
+        /// <summary>
+        /// Calcula el valor de aceptacion de la publicacion multiplicando la cantidad de likes * 5 más la cantidad de dislikes * -2.
+        /// </summary>
+        /// <returns>un entero</returns>
         public virtual int ValorDeAceptacion()
         {
             int cantlikes = CantidadDeLikes();
@@ -34,7 +37,10 @@ namespace Sistema
             int resultado = (cantlikes * 5) + (cantdislikes * -2);
             return resultado;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>Devuelve la cantida de Likes</returns>
         public int CantidadDeLikes()
         {
             int cantlikes = 0;
@@ -45,7 +51,10 @@ namespace Sistema
             }
             return cantlikes;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>Devuelve la cantidad de dislikes</returns>
         public int CantidadDeDislikes()
         {
             int cantdislikes = 0;
@@ -68,7 +77,11 @@ namespace Sistema
             if (Reacciones.Contains(unareaccion))
                 throw new Exception("Usted ya reacciono a este post");
         }
-
+        /// <summary>
+        /// Da de alta la reaccion
+        /// </summary>
+        /// <param name="miembro"></param>
+        /// <param name="islike"></param>
         public void AltaReaccion(Miembro miembro, bool islike)
         {
             Reaccion unareaccion = new Reaccion(miembro,islike);
@@ -96,7 +109,11 @@ namespace Sistema
         }
 
         
-
+        /// <summary>
+        /// Verifica que el texto exista en el contenido de la publicacion
+        /// </summary>
+        /// <param name="texto"></param>
+        /// <returns></returns>
         public bool ExisteTexto(string texto)
         {
             return _contenido.IndexOf(texto) != -1;
@@ -128,7 +145,10 @@ namespace Sistema
             if (cantletrastitulo < 3)
                 throw new Exception("El titulo debe ser más largo");
         }
-
+        /// <summary>
+        /// Cuenta la cantidad de letras que hay en el titulo
+        /// </summary>
+        /// <returns></returns>
         private int CantPalabras()
         {
             int cantchar = 0;
@@ -161,8 +181,12 @@ namespace Sistema
             if (Autor == null)
                 throw new Exception("El autor no puede ser un objeto nulo");
         }
-
-        public Reaccion? MiembroReaccionAPost(Miembro mi)
+        /// <summary>
+        /// Busca si un miembro reacciono a la publicacion y devuelve la reaccion
+        /// </summary>
+        /// <param name="mi"></param>
+        /// <returns>Una reaccion</returns>
+        public Reaccion? MiembroReaccionAPublicacion(Miembro mi)
         {
             int i = 0;
             Reaccion re = null;
@@ -174,7 +198,10 @@ namespace Sistema
             }
             return re;
         }
-
+        /// <summary>
+        /// Elimina la reaccion de la lista 
+        /// </summary>
+        /// <param name="reac"></param>
         public void EliminarReaccion(Reaccion reac)
         {
             int i = 0;
@@ -183,7 +210,10 @@ namespace Sistema
                 _reacciones.Remove(reac);
             }
         }
-
+        /// <summary>
+        /// Muestra el contenido recortado
+        /// </summary>
+        /// <returns></returns>
         public string MostrarContenidoRecortado()
         {
             string contenidopost = (string)Contenido.Clone();
