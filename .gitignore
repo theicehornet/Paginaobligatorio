@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/UML OBLIGATORIOP2.asta
+/umlp2.pdf
