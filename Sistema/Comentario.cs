@@ -15,10 +15,7 @@
 
         public override int ValorDeAceptacion()
         {
-            int cantlikes = CantidadDeLikes();
-            int cantdislikes = CantidadDeDislikes();
-            int resultado = (cantlikes * 5) + (cantdislikes * -2);
-            return resultado;
+            return base.ValorDeAceptacion();
         }
 
         /// <summary>

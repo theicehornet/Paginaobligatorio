@@ -27,9 +27,7 @@ namespace Sistema
 
         public override int ValorDeAceptacion()
         {
-            int cantlikes = CantidadDeLikes();
-            int cantdislikes = CantidadDeDislikes();
-            int resultado = (cantlikes * 5) + (cantdislikes * -2);
+            int resultado = base.ValorDeAceptacion();
             if (!_isprivado)
             {
                 return resultado + 10 ;

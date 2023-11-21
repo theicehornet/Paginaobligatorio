@@ -27,7 +27,13 @@ namespace Sistema
             s_ultid++;
         }
 
-        public abstract int ValorDeAceptacion();
+        public virtual int ValorDeAceptacion()
+        {
+            int cantlikes = CantidadDeLikes();
+            int cantdislikes = CantidadDeDislikes();
+            int resultado = (cantlikes * 5) + (cantdislikes * -2);
+            return resultado;
+        }
 
         public int CantidadDeLikes()
         {
