@@ -1,5 +1,10 @@
 ﻿@using Sistema;
 
+@if (ViewBag.Amigos.Count  == 0)
+{
+    <p>Usted no tiene ningun amigo, tal vez pueda encontrar alguno <a href="/Usuarios/BuscarMiembrosPorNombre">Aqui</a></p>
+}
+
 @foreach (Miembro m in ViewBag.Amigos)
 {
     <p>@m.ToString()</p>

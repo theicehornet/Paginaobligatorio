@@ -119,9 +119,9 @@ namespace PAGINA_OBLIGATORIO.Controllers
                 Solicitud soli = redsocial.BuscarSolicitudPor(conectado, buscado);
 
                 if (conectado != null && redsocial.IsAmigo(conectado, buscado))
-                    ViewBag.Amigos = true;
+                    ViewBag.SonAmigos = true;
                 else if (conectado != null && soli == null)
-                    ViewBag.Amigos = false;
+                    ViewBag.SonAmigos = false;
 
                 if (conectado != null && soli != null && soli.Solicitado.Equals(conectado))
                     ViewBag.Solicitud = true;

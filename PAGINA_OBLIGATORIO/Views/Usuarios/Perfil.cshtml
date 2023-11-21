@@ -13,7 +13,7 @@
 
 @if (rol != "admin" && Model.Email != correo)
 {
-    if (ViewBag.Amigos != null && ViewBag.Amigos)
+    if (ViewBag.SonAmigos != null && ViewBag.SonAmigos)
     {
         <p><a href="/Solicitudes/EliminarAmistad?correo=@Model.Email">Eliminar Amistad</a></p>
     }
