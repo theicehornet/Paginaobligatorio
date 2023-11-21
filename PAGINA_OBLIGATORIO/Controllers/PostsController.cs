@@ -110,7 +110,7 @@ namespace PAGINA_OBLIGATORIO.Controllers
             Miembro autor = redsocial.BuscarMiembro(HttpContext.Session.GetString("correo"));
             try
             {
-                Post post = redsocial.BuscarPostPorID(idpost);
+                Post post = redsocial.GetPostporId(idpost);
                 redsocial.RealizarComentarioaPost(post, titulo, contenido, autor);
             }
             catch (Exception ex)
@@ -128,7 +128,7 @@ namespace PAGINA_OBLIGATORIO.Controllers
             {
                 Post p = redsocial.GetPostporId(idpost);
                 Miembro Autor = redsocial.BuscarMiembro(HttpContext.Session.GetString("correo"));
-                Reaccion? reac = p.MiembroReaccionAPost(Autor);
+                Reaccion? reac = p.MiembroReaccionAPublicacion(Autor);
                 if (reac != null)
                 {
                     if (reac.Islike && reaccion == 1 || !reac.Islike && reaccion == 0)
@@ -159,7 +159,7 @@ namespace PAGINA_OBLIGATORIO.Controllers
                 Post p = redsocial.GetPostporId(idpost);
                 Miembro Autor = redsocial.BuscarMiembro(HttpContext.Session.GetString("correo"));
                 Comentario comentariobuscado = p.BuscarComentario(idcomentario);
-                Reaccion reac = comentariobuscado.MiembroReaccionAPost(Autor);
+                Reaccion reac = comentariobuscado.MiembroReaccionAPublicacion(Autor);
                 if (reac != null)
                 {
                     if (reac.Islike && reaccion == 1 || !reac.Islike && reaccion == 0)
