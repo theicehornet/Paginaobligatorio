@@ -59,7 +59,12 @@ namespace PAGINA_OBLIGATORIO.Controllers
             try
             {
                 redsocial.Altamiembro(email, password, nombre, apellido, fechanacimiento);
-                return Redirect($"/Home/Login");
+                Usuario user = redsocial.AuthenticateUsuario(email, password);
+                Miembro miembro = (Miembro)user;
+                HttpContext.Session.SetString("Nombre", miembro.NombreCompleto());
+                HttpContext.Session.SetString("rol", user.Rol());
+                HttpContext.Session.SetString("correo", user.Email);
+                return Redirect("/");
             }catch (Exception ex)
             {
                 ViewBag.Mensaje = ex.Message;
