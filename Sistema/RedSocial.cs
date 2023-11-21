@@ -28,8 +28,16 @@ namespace Sistema
         {
             _posts = new List<Post>();
             _usuarios = new List<Usuario>();
-            _relaciones = new List<Solicitud>();           
-            DatosPreCargados();
+            _relaciones = new List<Solicitud>();
+            try
+            {
+                DatosPreCargados();
+            }
+            catch
+            {
+
+            }
+            
         }
         #endregion
 
@@ -698,7 +706,7 @@ namespace Sistema
         /// </summary>
         private void MiembrosPrecargados()
         {
-            DateTime fecha = DateTime.Parse("13/05/2005");
+            DateTime fecha = new DateTime(2020,05,10);
             Altamiembro("fakeemail1@gmail.com", "P@ssw0rd123", "Juan", "Pérez", fecha);
             Altamiembro("testuser2@gmail.com", "SecurePwd!456", "María", "Rodríguez", fecha);
             Altamiembro("notreal3@gmail.com", "Random#Pwd789", "Luis", "González", fecha);
