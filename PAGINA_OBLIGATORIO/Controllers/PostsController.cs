@@ -26,7 +26,7 @@ namespace PAGINA_OBLIGATORIO.Controllers
             return View(); 
         }
 
-        public IActionResult FiltarPostPor(string texto, int aceptacion)
+        public IActionResult FiltarPostPor(string texto = " ", int aceptacion = 0 )
         {
             Miembro unm = null;
             try

@@ -19,3 +19,7 @@
     }
     <p><a href="/Usuarios/Perfil?correo=@m.Email">Ver Perfil</a></p>
 }
+@if (ViewBag.Usuarios.Count == 0 && Context.Session.GetString("rol") != "admin")
+{
+    <p>No hay personas que coincidan con el nombre o apellido</p>
+}
